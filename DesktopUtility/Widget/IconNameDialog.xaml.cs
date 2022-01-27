@@ -9,7 +9,7 @@ namespace DesktopUtility.Widget
     public partial class IconNameDialog : Window
     {
         public bool ok = false;
-
+ 
         public IconNameDialog()
         {
             InitializeComponent();
