@@ -1,0 +1,32 @@
+﻿<Window x:Class="DesktopUtility.Widget.IconNameDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DesktopUtility.Widget"
+        
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
+        Title="输入应用名称" FontFamily="Microsoft YaHei UI" FontSize="14" >
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="64"></ColumnDefinition>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Image VerticalAlignment="Center" HorizontalAlignment="Center" Grid.RowSpan="3" Grid.Column="0" x:Name="icon" Width="64" Height="64"></Image>
+        
+        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="label" Margin="5" Grid.Row="0" Grid.Column="1">输入应用名称</TextBlock>
+        <TextBox VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5" x:Name="box" Grid.Row="1" Grid.Column="2"></TextBox>
+        <WrapPanel Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" >
+            <Button Margin="5" Click="Button_Click" VerticalAlignment="Center" HorizontalAlignment="Center">确定</Button>
+            <Button Margin="5" Click="CancelButtonClicked" VerticalAlignment="Center" HorizontalAlignment="Center">取消</Button>
+        </WrapPanel>
+        
+    </Grid>
+</Window>
