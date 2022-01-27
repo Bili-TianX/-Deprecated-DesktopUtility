@@ -1,7 +1,6 @@
 ﻿using DesktopUtility.Util;
 using DesktopUtility.Widget;
 using System;
-using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -17,6 +16,10 @@ namespace DesktopUtility
             InitializeComponent();
             Icon = Util.ImageUtil.ToImageSource(DesktopUtility.Resources.Resource1.icon);
             addAppItem.Icon = Util.ImageUtil.ToImage(DesktopUtility.Resources.Resource1.addIcon);
+            foreach (var icon in Data.IconFactory.icons)
+            {
+                addIcon(icon);
+            }
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -35,21 +38,31 @@ namespace DesktopUtility
                 if (!dialog.ok) return;
                 var name = dialog.IconName;
 
-                var icon = new AppIcon(name, ofd.FileName);
-                Data.IconFactory.icons.Add(icon);
-                LaunchPad.Children.Add(icon);
-
-                int len = Data.IconFactory.icons.Count;
-                if (LaunchPad.RowDefinitions.Count <= (len - 1) / 3)
-                {
-                    LaunchPad.RowDefinitions.Add(new RowDefinition());
-                }
-
-                Grid.SetColumn(icon, (len - 1) % 3);
-                Grid.SetRow(icon, (len - 1) / 3);
-
-                icon.SetImage();
+                addIcon(new Data.IconData(name, ofd.FileName));
             }
+        }
+
+        private void addIcon(Data.IconData data)
+        {
+            var icon = new AppIcon(data);
+            Data.IconFactory.icons.Add(icon);
+            addIcon(icon);
+        }
+
+        private void addIcon(AppIcon icon)
+        {
+            LaunchPad.Children.Add(icon);
+
+            int len = Data.IconFactory.icons.Count;
+            if (LaunchPad.RowDefinitions.Count <= (len - 1) / 3)
+            {
+                LaunchPad.RowDefinitions.Add(new RowDefinition());
+            }
+
+            Grid.SetColumn(icon, (len - 1) % 3);
+            Grid.SetRow(icon, (len - 1) / 3);
+
+            icon.SetImage();
         }
     }
 }

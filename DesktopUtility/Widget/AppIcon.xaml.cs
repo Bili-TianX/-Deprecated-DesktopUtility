@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -14,16 +13,16 @@ namespace DesktopUtility
     /// </summary>
     public partial class AppIcon : UserControl
     {
-        public readonly Data.IconData data;
+        public readonly Data.IconData Data;
         public const int duration = 200;
 
         public AppIcon()
         {
             InitializeComponent();
-            data = new()
+            Data = new()
             {
-                Path = "",
-                Name = ""
+                Path = String.Empty,
+                Name = String.Empty
             };
             border.Background = new SolidColorBrush(System.Windows.Media.Color.FromArgb(0, 0, 0, 0));
 
@@ -32,9 +31,13 @@ namespace DesktopUtility
             RenameItem.Icon = Util.ImageUtil.ToImage(DesktopUtility.Resources.Resource1.renameIcon);
         }
 
+        public AppIcon(Data.IconData data) : this(data.Name, data.Path)
+        {
+        }
+
         public AppIcon(String name, String path) : this()
         {
-            data = new()
+            Data = new()
             {
                 Path = path,
                 Name = name
@@ -75,7 +78,7 @@ namespace DesktopUtility
         public unsafe void SetImage()
         {
 
-            var bitmap = Util.ImageUtil.GetEXEIcon(data.Path);
+            var bitmap = Util.ImageUtil.GetEXEIcon(Data.Path);
             if (bitmap == null)
             {
                 MessageBox.Show("无法获取图标（使用默认图标）", "错误");
@@ -89,10 +92,10 @@ namespace DesktopUtility
         {
             if (e.ChangedButton.Equals(MouseButton.Left))
             {
-                if (data.Path != "" && data.Path != null)
+                if (Data.Path != "" && Data.Path != null)
                 {
                     var p = new Process();
-                    p.StartInfo.FileName = data.Path;
+                    p.StartInfo.FileName = Data.Path;
                     p.Start();
                 }
             }

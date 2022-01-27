@@ -3,9 +3,8 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Windows.Media;
-using System.Windows.Controls;
 using System.Text;
+using System.Windows.Media;
 
 namespace DesktopUtility.Util
 {
@@ -73,15 +72,18 @@ namespace DesktopUtility.Util
                 {
                     var icon = Icon.FromHandle(largeIcons[0]);
                     return icon.ToBitmap();
-                } else if (smallIcons.Length > 0)
+                }
+                else if (smallIcons.Length > 0)
                 {
                     var icon = Icon.FromHandle(smallIcons[0]);
                     return icon.ToBitmap();
-                } else
+                }
+                else
                 {
                     return null;
                 }
-            } else
+            }
+            else
             {
                 return null;
             }

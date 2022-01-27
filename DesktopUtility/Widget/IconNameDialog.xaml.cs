@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Media;
 
 namespace DesktopUtility.Widget
@@ -9,12 +10,12 @@ namespace DesktopUtility.Widget
     public partial class IconNameDialog : Window
     {
         public bool ok = false;
- 
+
         public IconNameDialog()
         {
             InitializeComponent();
             Height = 144;
-            Width = 256;
+            Width = 324;
             icon.Source = Util.ImageUtil.ToImageSource(DesktopUtility.Resources.Resource1.question);
         }
 
@@ -31,11 +32,12 @@ namespace DesktopUtility.Widget
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (IconName == "")
+            if (IconName == string.Empty)
             {
                 label.Text = "名称为空：请重新输入";
                 label.Foreground = new SolidColorBrush(Util.ColorUtil.Red);
-            } else if (Data.IconFactory.ExistByName(IconName))
+            }
+            else if (Data.IconFactory.ExistByName(IconName))
             {
                 label.Text = "已存在同名应用：请重新输入";
                 label.Foreground = new SolidColorBrush(Util.ColorUtil.Red);

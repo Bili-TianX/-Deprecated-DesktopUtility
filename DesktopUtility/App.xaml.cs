@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Threading;
+using System.Windows;
 
 namespace DesktopUtility
 {
@@ -14,9 +15,12 @@ namespace DesktopUtility
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            //Thread.Sleep(1000);
+            Data.IconFactory.LoadFromFile();
         }
 
-
+        private void Application_Exit(object sender, ExitEventArgs e)
+        {
+            Data.IconFactory.SaveToFile();
+        }
     }
 }
