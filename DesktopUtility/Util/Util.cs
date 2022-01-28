@@ -20,10 +20,12 @@ namespace DesktopUtility.Util
             if (month == 2)
             {
                 return IsLeapYear(year) ? 29 : 28;
-            } else if (month == 4 || month == 6 || month == 9 || month == 11)
+            }
+            else if (month == 4 || month == 6 || month == 9 || month == 11)
             {
                 return 30;
-            } else { return 31; }
+            }
+            else { return 31; }
         }
     }
 
@@ -89,12 +91,12 @@ namespace DesktopUtility.Util
                 WinAPI.ExtractIconEx(path, 0, largeIcons, smallIcons, count);
                 if (largeIcons.Length > 0)
                 {
-                    var icon = Icon.FromHandle(largeIcons[0]);
+                    Icon? icon = Icon.FromHandle(largeIcons[0]);
                     return icon.ToBitmap();
                 }
                 else if (smallIcons.Length > 0)
                 {
-                    var icon = Icon.FromHandle(smallIcons[0]);
+                    Icon? icon = Icon.FromHandle(smallIcons[0]);
                     return icon.ToBitmap();
                 }
                 else

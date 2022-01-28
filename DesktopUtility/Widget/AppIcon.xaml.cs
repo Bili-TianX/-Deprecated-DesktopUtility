@@ -14,7 +14,7 @@ namespace DesktopUtility
     /// </summary>
     public partial class AppIcon : UserControl
     {
-        public  Data.IconData Data;
+        public Data.IconData Data;
         public const int duration = 200;
         public Process? process = null;
         public static Color BACKGROUND = Color.FromArgb(80, 211, 211, 211);
@@ -24,8 +24,8 @@ namespace DesktopUtility
             InitializeComponent();
             Data = new()
             {
-                Path = String.Empty,
-                Name = String.Empty
+                Path = string.Empty,
+                Name = string.Empty
             };
             border.Background = new SolidColorBrush(System.Windows.Media.Color.FromArgb(0, 0, 0, 0));
 
@@ -38,14 +38,14 @@ namespace DesktopUtility
         {
         }
 
-        public AppIcon(String name, String path) : this()
+        public AppIcon(string name, string path) : this()
         {
             Data = new()
             {
                 Path = path,
                 Name = name
             };
-             
+
             NameLabel.Text = name;
         }
 
@@ -81,7 +81,7 @@ namespace DesktopUtility
         public unsafe void SetImage()
         {
 
-            var bitmap = Util.ImageUtil.GetEXEIcon(Data.Path);
+            System.Drawing.Bitmap? bitmap = Util.ImageUtil.GetEXEIcon(Data.Path);
             if (bitmap == null)
             {
                 //MessageBox.Show("无法获取图标（使用默认图标）", "错误");
@@ -101,7 +101,7 @@ namespace DesktopUtility
 
         private void StartProcess()
         {
-            if (Data.Path != String.Empty)
+            if (Data.Path != string.Empty)
             {
                 process = new Process();
                 process.StartInfo.FileName = Data.Path;
@@ -117,13 +117,13 @@ namespace DesktopUtility
 
         private void DeleteItem_Click(object sender, RoutedEventArgs e)
         {
-            var result = MessageBox.Show($"删除 {Data} ?", "删除", MessageBoxButton.OKCancel);
+            MessageBoxResult result = MessageBox.Show($"删除 {Data} ?", "删除", MessageBoxButton.OKCancel);
             if (result == MessageBoxResult.OK)
             {
                 DesktopUtility.Data.IconFactory.Remove(Data);
                 if (App.Current.MainWindow != null)
                 {
-                    var window = (MainWindow)App.Current.MainWindow;
+                    MainWindow? window = (MainWindow)App.Current.MainWindow;
                     window.ReLayout();
                 }
             }

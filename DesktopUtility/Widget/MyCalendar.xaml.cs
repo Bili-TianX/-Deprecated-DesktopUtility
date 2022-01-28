@@ -1,17 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace DesktopUtility.Widget
 {
@@ -30,12 +19,12 @@ namespace DesktopUtility.Widget
         {
             InitializeComponent();
 
-            var now = DateTime.Now;
+            DateTime now = DateTime.Now;
             year = now.Year;
             month = now.Month;
             week = ((int)new DateTime(year, month, 1).DayOfWeek);
             max_day = Util.DateUtil.GetMaxDay(year, month);
-            row_count = (int) Math.Ceiling((max_day + week) / 7.0);
+            row_count = (int)Math.Ceiling((max_day + week) / 7.0);
 
             ReLayout();
         }
@@ -63,7 +52,7 @@ namespace DesktopUtility.Widget
 
             for (int i = 1; i <= max_day; ++i)
             {
-                var label = new Label()
+                Label? label = new Label()
                 {
                     Content = i,
                     HorizontalAlignment = HorizontalAlignment.Center,

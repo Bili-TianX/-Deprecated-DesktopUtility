@@ -2,7 +2,6 @@
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.IO;
-using System.Windows;
 
 namespace DesktopUtility.Data
 {
@@ -17,8 +16,15 @@ namespace DesktopUtility.Data
             this.Path = Path;
         }
 
-        public static bool operator ==(IconData a, IconData b) => a.Name == b.Name && a.Path == b.Path;
-        public static bool operator !=(IconData a, IconData b) => !(a == b);
+        public static bool operator ==(IconData a, IconData b)
+        {
+            return a.Name == b.Name && a.Path == b.Path;
+        }
+
+        public static bool operator !=(IconData a, IconData b)
+        {
+            return !(a == b);
+        }
 
         public override string ToString()
         {
@@ -37,10 +43,10 @@ namespace DesktopUtility.Data
         public const string TargetFile = "icons.json";
 
         public static List<AppIcon> icons = new();
-        
+
         public static void Remove(IconData data)
         {
-            foreach (var icon in icons)
+            foreach (AppIcon? icon in icons)
             {
                 if (icon.Data == data)
                 {
@@ -53,10 +59,12 @@ namespace DesktopUtility.Data
         public static bool ExistByName(string name)
         {
             bool result = false;
-            foreach (var icon in icons)
+            foreach (AppIcon? icon in icons)
             {
                 if (icon.Data.Name == name)
+                {
                     result = true;
+                }
             }
 
             return result;
@@ -68,7 +76,9 @@ namespace DesktopUtility.Data
             icons.ForEach((icon) =>
             {
                 if (icon.Data.Path == path)
+                {
                     result = true;
+                }
             });
 
             return result;
@@ -86,10 +96,10 @@ namespace DesktopUtility.Data
                 return;
             }
             StreamReader reader = new(TargetFolder + TargetFile);
-            var array = JArray.Parse(reader.ReadToEnd());
-            foreach (var item in array)
+            JArray? array = JArray.Parse(reader.ReadToEnd());
+            foreach (JToken? item in array)
             {
-                var obj = JsonConvert.DeserializeObject(item.ToString(), typeof(IconData));
+                object? obj = JsonConvert.DeserializeObject(item.ToString(), typeof(IconData));
                 if (obj != null)
                 {
                     icons.Add(new AppIcon((IconData)obj));
@@ -107,7 +117,7 @@ namespace DesktopUtility.Data
             }
             StreamWriter writer = new(TargetFolder + TargetFile);
             JArray array = new();
-            foreach (var icon in icons)
+            foreach (AppIcon? icon in icons)
             {
                 array.Add(JObject.FromObject(icon.Data));
             }

@@ -18,8 +18,8 @@ namespace DesktopUtility
         {
             InitializeComponent();
 
-            var values = App.Current.MainWindow.Resources.Values;
-            foreach (var value in values)
+            System.Collections.ICollection? values = App.Current.MainWindow.Resources.Values;
+            foreach (object? value in values)
             {
                 if (value.GetType() == typeof(Style) && ((Style)value).TargetType.Name == nameof(ListBoxItem))
                 {
@@ -28,7 +28,7 @@ namespace DesktopUtility
                 }
             }
 
-            for (int i = 0;  i < COLUMN_COUNT; i++)
+            for (int i = 0; i < COLUMN_COUNT; i++)
             {
                 LaunchPad.ColumnDefinitions.Add(new ColumnDefinition()
                 {
@@ -61,7 +61,7 @@ namespace DesktopUtility
                 Filter = "(*.exe)|*.exe",
                 Multiselect = false
             };
-            var r = ofd.ShowDialog(this);
+            bool? r = ofd.ShowDialog(this);
             if (Data.IconFactory.ExistByPath(ofd.FileName))
             {
                 MessageBox.Show("应用已存在: " + ofd.FileName, "错误");
@@ -69,10 +69,14 @@ namespace DesktopUtility
             }
             if (r != null && (bool)r)
             {
-                var dialog = new IconNameDialog(ofd.SafeFileName[..^4].Capitalize());
+                IconNameDialog? dialog = new IconNameDialog(ofd.SafeFileName[..^4].Capitalize());
                 dialog.ShowDialog();
-                if (!dialog.ok) return;
-                var name = dialog.IconName;
+                if (!dialog.ok)
+                {
+                    return;
+                }
+
+                string? name = dialog.IconName;
 
                 AddIcon(new Data.IconData(name, ofd.FileName));
             }
@@ -80,7 +84,7 @@ namespace DesktopUtility
 
         private void AddIcon(Data.IconData data)
         {
-            var icon = new AppIcon(data);
+            AppIcon? icon = new AppIcon(data);
             Data.IconFactory.icons.Add(icon);
             AddIcon(icon);
         }
