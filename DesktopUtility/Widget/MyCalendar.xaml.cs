@@ -48,16 +48,16 @@ namespace DesktopUtility.Widget
                     Height = new GridLength(1, GridUnitType.Star)
                 });
             }
+            MainGrid.RowDefinitions.Add(new RowDefinition()
+            {
+                Height = new GridLength(10, GridUnitType.Pixel)
+            });
             Grid.SetRowSpan(border, MainGrid.RowDefinitions.Count);
 
             for (int i = 1; i <= max_day; ++i)
             {
-                Label? label = new Label()
-                {
-                    Content = i,
-                    HorizontalAlignment = HorizontalAlignment.Center,
-                    VerticalAlignment = VerticalAlignment.Center
-                };
+                Widget.DateLabel? label = new();
+                label.block.Text = i.ToString();
                 MainGrid.Children.Add(label);
                 Grid.SetRow(label, 2 + (i + week - 2) / 7);
                 Grid.SetColumn(label, (i + week - 2) % 7);

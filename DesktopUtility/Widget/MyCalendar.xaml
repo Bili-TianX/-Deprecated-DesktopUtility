@@ -3,9 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:DesktopUtility"
+             xmlns:local="clr-namespace:DesktopUtility" xmlns:widget="clr-namespace:DesktopUtility.Widget"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="800">
+             d:DesignHeight="800" d:DesignWidth="600">
 
     <Grid x:Name="MainGrid">
         <Grid.ColumnDefinitions>
@@ -29,15 +29,14 @@
 
         </Border>
 
-        <TextBlock Grid.ColumnSpan="7" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center">2022年1月计划</TextBlock>
-        <TextBlock Text="一" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-        <TextBlock Text="二" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-        <TextBlock Text="三" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-        <TextBlock Text="四" Grid.Row="1" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-        <TextBlock Text="五" Grid.Row="1" Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-        <TextBlock Text="六" Grid.Row="1" Grid.Column="5" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-        <TextBlock Text="日" Grid.Row="1" Grid.Column="6" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-
+        <TextBlock Grid.ColumnSpan="7" FontSize="24" FontWeight="ExtraBold" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center">2022年1月</TextBlock>
+        <TextBlock Text="一" FontSize="18" FontWeight="Bold" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <TextBlock Text="二" FontSize="18" FontWeight="Bold" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <TextBlock Text="三" FontSize="18" FontWeight="Bold" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <TextBlock Text="四" FontSize="18" FontWeight="Bold" Grid.Row="1" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <TextBlock Text="五" FontSize="18" FontWeight="Bold" Grid.Row="1" Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <TextBlock Text="六" FontSize="18" FontWeight="Bold" Grid.Row="1" Grid.Column="5" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <TextBlock Text="日" FontSize="18" FontWeight="Bold" Grid.Row="1" Grid.Column="6" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
     </Grid>
 </UserControl>

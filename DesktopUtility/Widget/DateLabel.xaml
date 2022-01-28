@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="DesktopUtility.Widget.DateLabel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DesktopUtility.Widget"
+             mc:Ignorable="d" 
+             d:DesignHeight="64" d:DesignWidth="64">
+    <UserControl.Resources>
+        <ControlTemplate x:Key="template" TargetType="Label">
+                
+
+        </ControlTemplate>
+    </UserControl.Resources>
+
+
+    <Label VerticalAlignment="Center" HorizontalAlignment="Center" MouseEnter="Label_MouseEnter" MouseLeave="Label_MouseLeave">
+        <Border x:Name="border" Background="Transparent" BorderBrush="Transparent" CornerRadius="5" BorderThickness="1" Width="48" Height="36">
+            <TextBlock FontSize="16" FontWeight="Medium" Margin="3" x:Name="block" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+        </Border>
+    </Label>
+</UserControl>

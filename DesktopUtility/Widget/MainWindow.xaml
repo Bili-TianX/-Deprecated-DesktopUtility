@@ -3,10 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:DesktopUtility" 
-        xmlns:widget="clr-namespace:DesktopUtility.Widget"
-        mc:Ignorable="d" WindowStartupLocation="CenterScreen"
-        Title="DesktopUtility"  Width="1280" Height="720" FontFamily="Microsoft YaHei UI" FontWeight="Medium" FontSize="14">
+        xmlns:local="clr-namespace:DesktopUtility" xmlns:widget="clr-namespace:DesktopUtility.Widget"
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen" WindowStyle="None" ResizeMode="NoResize"
+        Loaded="MainWindow_onLoaded"
+        Title="DesktopUtility"  Width="1920" Height="1080" FontFamily="Microsoft YaHei UI" FontWeight="Medium" FontSize="14">
 
     <Window.Resources>
         <ControlTemplate x:Key="MySplitter" TargetType="GridSplitter">
@@ -58,12 +58,16 @@
         </Style>
 
     </Window.Resources>
+    <Window.Background>
+        <ImageBrush/>
+    </Window.Background>
 
     <Window.ContextMenu>
         <ContextMenu>
             <MenuItem x:Name="addAppItem" Header="添加应用" Click="MenuItem_Click"></MenuItem>
         </ContextMenu>
     </Window.ContextMenu>
+    
 
     <Grid x:Name="MainGrid">
         <Grid.ColumnDefinitions>
@@ -90,10 +94,10 @@
                 <ColumnDefinition Width="1.5*"></ColumnDefinition>
                 <ColumnDefinition Width="1*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            
+
             <Grid.RowDefinitions>
                 <RowDefinition Height="64"></RowDefinition>
-                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="1.5*"></RowDefinition>
                 <RowDefinition Height="1*"></RowDefinition>
             </Grid.RowDefinitions>
 
@@ -108,8 +112,8 @@
                 <Border Grid.RowSpan="2" CornerRadius="15" BorderThickness="2" BorderBrush="Black"></Border>
 
                 <TextBlock Margin="0, 5, 0, 0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center">重要日倒计时</TextBlock>
-                <ListBox Margin="5, 0, 5, 12" x:Name="DayList" Grid.Row="1">
-                    
+                <ListBox Margin="5, 0, 5, 12" x:Name="DayList" Grid.Row="1" Background="{x:Null}">
+
                 </ListBox>
             </Grid>
             <Grid Margin="5" Grid.Row="2" Grid.Column="1">
@@ -118,12 +122,12 @@
                     <RowDefinition Height="1*"></RowDefinition>
                 </Grid.RowDefinitions>
                 <Border Grid.RowSpan="2" CornerRadius="15" BorderThickness="2" BorderBrush="Black"></Border>
-                
+
                 <TextBlock Margin="0, 5, 0, 0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center">每日需做</TextBlock>
-                <ListBox Margin="5, 0, 5, 12" x:Name="TaskList" Grid.Row="1">
+                <ListBox Margin="5, 0, 5, 12" x:Name="TaskList" Grid.Row="1" Background="{x:Null}">
                 </ListBox>
             </Grid>
-            
+
         </Grid>
         <Grid Grid.Column="2">
             <Grid.RowDefinitions>

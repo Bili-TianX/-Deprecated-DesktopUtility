@@ -80,7 +80,6 @@ namespace DesktopUtility
 
         public unsafe void SetImage()
         {
-
             System.Drawing.Bitmap? bitmap = Util.ImageUtil.GetEXEIcon(Data.Path);
             if (bitmap == null)
             {

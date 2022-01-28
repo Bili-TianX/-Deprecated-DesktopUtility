@@ -35,6 +35,27 @@ namespace DesktopUtility.Data
         {
             return NewName != string.Empty && !IconFactory.ExistByName(NewName);
         }
+
+        public override bool Equals(object? obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+            else if (obj.GetType() != typeof(IconData))
+            {
+                return false;
+            }
+            else
+            {
+                return this == (IconData)obj;
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
     }
 
     public static class IconFactory
