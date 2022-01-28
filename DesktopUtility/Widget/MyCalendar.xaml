@@ -36,7 +36,7 @@
         <TextBlock Text="四" Grid.Row="1" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         <TextBlock Text="五" Grid.Row="1" Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         <TextBlock Text="六" Grid.Row="1" Grid.Column="5" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-        <TextBlock Text="日" Grid.Row="1" Grid.Column="6" VerticalAlignment="Center" HorizontalAlignment="Center" Background="Cyan"/>
+        <TextBlock Text="日" Grid.Row="1" Grid.Column="6" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
 
     </Grid>
