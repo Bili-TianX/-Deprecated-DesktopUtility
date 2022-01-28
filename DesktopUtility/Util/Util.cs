@@ -8,6 +8,25 @@ using System.Windows.Media;
 
 namespace DesktopUtility.Util
 {
+    public static class DateUtil
+    {
+        public static bool IsLeapYear(int year)
+        {
+            return year % 4 == 0 && year % 100 == 0;
+        }
+
+        public static int GetMaxDay(int year, int month)
+        {
+            if (month == 2)
+            {
+                return IsLeapYear(year) ? 29 : 28;
+            } else if (month == 4 || month == 6 || month == 9 || month == 11)
+            {
+                return 30;
+            } else { return 31; }
+        }
+    }
+
     public static class ExMethod
     {
         public static string Capitalize(this string s)

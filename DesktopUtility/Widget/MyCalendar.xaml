@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="800">
 
-    <Grid>
+    <Grid x:Name="MainGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"></ColumnDefinition>
             <ColumnDefinition Width="1*"></ColumnDefinition>
@@ -19,33 +19,23 @@
         </Grid.ColumnDefinitions>
        
         <Grid.RowDefinitions>
-            <RowDefinition Height="64"></RowDefinition>
-            <RowDefinition Height="1*"></RowDefinition>
-            <RowDefinition Height="1*"></RowDefinition>
-            <RowDefinition Height="1*"></RowDefinition>
-            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="48"></RowDefinition>
             <RowDefinition Height="1*"></RowDefinition>
         </Grid.RowDefinitions>
         
         
         
-        <Border Margin="5" Grid.RowSpan="6" Grid.ColumnSpan="7" CornerRadius="15" BorderBrush="Black" BorderThickness="2">
+        <Border x:Name="border" Margin="5" Grid.RowSpan="2" Grid.ColumnSpan="7" CornerRadius="15" BorderBrush="Black" BorderThickness="2">
 
         </Border>
 
         <TextBlock Grid.ColumnSpan="7" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center">2022年1月计划</TextBlock>
         <TextBlock Text="一" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-
         <TextBlock Text="二" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-
         <TextBlock Text="三" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-
         <TextBlock Text="四" Grid.Row="1" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-
         <TextBlock Text="五" Grid.Row="1" Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-
         <TextBlock Text="六" Grid.Row="1" Grid.Column="5" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-
         <TextBlock Text="日" Grid.Row="1" Grid.Column="6" VerticalAlignment="Center" HorizontalAlignment="Center" Background="Cyan"/>
 
 
