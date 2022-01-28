@@ -11,14 +11,45 @@ namespace DesktopUtility
     /// </summary>
     public partial class MainWindow : Window
     {
+        public const int COLUMN_COUNT = 1;
+        public static Style? boxItemStyle;
+
         public MainWindow()
         {
             InitializeComponent();
+
+            var values = App.Current.MainWindow.Resources.Values;
+            foreach (var value in values)
+            {
+                if (value.GetType() == typeof(Style) && ((Style)value).TargetType.Name == nameof(ListBoxItem))
+                {
+                    boxItemStyle = (Style)value;
+                    break;
+                }
+            }
+
+            for (int i = 0;  i < COLUMN_COUNT; i++)
+            {
+                LaunchPad.ColumnDefinitions.Add(new ColumnDefinition()
+                {
+                    Width = new GridLength(1, GridUnitType.Star)
+                });
+            }
             Icon = Util.ImageUtil.ToImageSource(DesktopUtility.Resources.Resource1.icon);
             addAppItem.Icon = Util.ImageUtil.ToImage(DesktopUtility.Resources.Resource1.addIcon);
-            foreach (var icon in Data.IconFactory.icons)
+
+            ReLayout();
+        }
+
+        public void ReLayout()
+        {
+            LaunchPad.Children.Clear();
+            LaunchPad.RowDefinitions.Clear();
+
+
+            for (int i = 0; i < Data.IconFactory.icons.Count; ++i)
             {
-                addIcon(icon);
+                AddIcon(Data.IconFactory.icons[i], i);
             }
         }
 
@@ -31,6 +62,11 @@ namespace DesktopUtility
                 Multiselect = false
             };
             var r = ofd.ShowDialog(this);
+            if (Data.IconFactory.ExistByPath(ofd.FileName))
+            {
+                MessageBox.Show("应用已存在: " + ofd.FileName, "错误");
+                return;
+            }
             if (r != null && (bool)r)
             {
                 var dialog = new IconNameDialog(ofd.SafeFileName[..^4].Capitalize());
@@ -38,29 +74,33 @@ namespace DesktopUtility
                 if (!dialog.ok) return;
                 var name = dialog.IconName;
 
-                addIcon(new Data.IconData(name, ofd.FileName));
+                AddIcon(new Data.IconData(name, ofd.FileName));
             }
         }
 
-        private void addIcon(Data.IconData data)
+        private void AddIcon(Data.IconData data)
         {
             var icon = new AppIcon(data);
             Data.IconFactory.icons.Add(icon);
-            addIcon(icon);
+            AddIcon(icon);
         }
 
-        private void addIcon(AppIcon icon)
+        private void AddIcon(AppIcon icon, int index = -1)
         {
+            if (index == -1)
+            {
+                index = Data.IconFactory.icons.Count - 1;
+            }
+
             LaunchPad.Children.Add(icon);
 
-            int len = Data.IconFactory.icons.Count;
-            if (LaunchPad.RowDefinitions.Count <= (len - 1) / 3)
+            if (LaunchPad.RowDefinitions.Count <= index / COLUMN_COUNT)
             {
                 LaunchPad.RowDefinitions.Add(new RowDefinition());
             }
 
-            Grid.SetColumn(icon, (len - 1) % 3);
-            Grid.SetRow(icon, (len - 1) / 3);
+            Grid.SetColumn(icon, index % COLUMN_COUNT);
+            Grid.SetRow(icon, index / COLUMN_COUNT);
 
             icon.SetImage();
         }

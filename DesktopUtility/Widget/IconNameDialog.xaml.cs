@@ -16,6 +16,7 @@ namespace DesktopUtility.Widget
             InitializeComponent();
             Height = 144;
             Width = 324;
+            Icon = Util.ImageUtil.ToImageSource(DesktopUtility.Resources.Resource1.icon);
             icon.Source = Util.ImageUtil.ToImageSource(DesktopUtility.Resources.Resource1.question);
         }
 
@@ -32,14 +33,9 @@ namespace DesktopUtility.Widget
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (IconName == string.Empty)
+            if (!Data.IconData.CheckName(IconName))
             {
-                label.Text = "名称为空：请重新输入";
-                label.Foreground = new SolidColorBrush(Util.ColorUtil.Red);
-            }
-            else if (Data.IconFactory.ExistByName(IconName))
-            {
-                label.Text = "已存在同名应用：请重新输入";
+                label.Text = "非法名称：请重新输入";
                 label.Foreground = new SolidColorBrush(Util.ColorUtil.Red);
             }
             else

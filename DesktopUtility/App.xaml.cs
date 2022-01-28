@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Windows;
 
 namespace DesktopUtility
@@ -21,6 +22,7 @@ namespace DesktopUtility
         private void Application_Exit(object sender, ExitEventArgs e)
         {
             Data.IconFactory.SaveToFile();
+            GC.Collect();
         }
     }
 }

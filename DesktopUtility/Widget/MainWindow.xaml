@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:DesktopUtility"
+        xmlns:local="clr-namespace:DesktopUtility" 
+        xmlns:widget="clr-namespace:DesktopUtility.Widget"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen"
         Title="DesktopUtility"  Width="1280" Height="720" FontFamily="Microsoft YaHei UI" FontWeight="Medium" FontSize="14">
 
@@ -11,6 +12,51 @@
         <ControlTemplate x:Key="MySplitter" TargetType="GridSplitter">
             <GridSplitter Background="Black" Width="2"/>
         </ControlTemplate>
+
+        <ControlTemplate x:Key="MyItem" TargetType="ListBoxItem">
+            <Border x:Name="border" CornerRadius="0" Margin="2" BorderBrush="Black" BorderThickness="0,0,0,0">
+                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                    Margin="10,0,0,0" />
+            </Border>
+
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Foreground" Value="#FF46679A" />
+                    <Setter TargetName="border" Property="Background" Value="white" />
+                    <Setter TargetName="border" Property="BorderBrush" Value="#FF46679A" />
+                    <Setter TargetName="border" Property="BorderThickness" Value="4,0,0,0.5" />
+                </Trigger>
+
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsMouseOver" Value="True" />
+                        <Condition Property="IsSelected" Value="False" />
+                    </MultiTrigger.Conditions>
+                    <MultiTrigger.Setters>
+                        <Setter Property="Foreground" Value="#FF46679A" />
+                        <Setter TargetName="border" Property="Background" Value="white" />
+                        <Setter TargetName="border" Property="BorderBrush" Value="#FF46679A" />
+                        <Setter TargetName="border" Property="BorderThickness" Value="0,0,0,0.5" />
+                    </MultiTrigger.Setters>
+                </MultiTrigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+        <Style TargetType="ListBoxItem" x:Key="MyListStyle">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <!--前景色-->
+            <Setter Property="Foreground" Value="Black" />
+            <!--高度-->
+            <Setter Property="Height" Value="40" />
+            <!--字体大小-->
+            <Setter Property="FontSize" Value="16" />
+            <!--对齐-->
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Template" Value="{StaticResource MyItem}" />
+        </Style>
+
     </Window.Resources>
 
     <Window.ContextMenu>
@@ -25,31 +71,59 @@
             <ColumnDefinition Width="1*"></ColumnDefinition>
             <ColumnDefinition Width="1*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        
+
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="64"></RowDefinition>
                 <RowDefinition Height="1*"></RowDefinition>
             </Grid.RowDefinitions>
 
-            
-            
+
+
             <TextBlock FontSize="24" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">应用</TextBlock>
             <Grid Grid.Row="1"  x:Name="LaunchPad">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*"></ColumnDefinition>
-                    <ColumnDefinition Width="1*"></ColumnDefinition>
-                    <ColumnDefinition Width="1*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
             </Grid>
 
         </Grid>
-        <Grid Grid.Column="1">
+        <Grid x:Name="grid1" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1.5*"></ColumnDefinition>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            
             <Grid.RowDefinitions>
+                <RowDefinition Height="64"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
                 <RowDefinition Height="1*"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <TextBlock FontSize="24" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">月计划</TextBlock>
+            <TextBlock FontSize="24" Grid.Row="0" Grid.ColumnSpan="2"  HorizontalAlignment="Center" VerticalAlignment="Center">月计划</TextBlock>
+            <widget:MyCalendar Grid.Row="1" Grid.ColumnSpan="2"></widget:MyCalendar>
+
+            <Grid Margin="5" Grid.Row="2" Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="32"></RowDefinition>
+                    <RowDefinition Height="1*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Border Grid.RowSpan="2" CornerRadius="15" BorderThickness="2" BorderBrush="Black"></Border>
+
+                <TextBlock Margin="0, 5, 0, 0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center">重要日倒计时</TextBlock>
+                <ListBox Margin="5, 0, 5, 12" x:Name="DayList" Grid.Row="1">
+                    
+                </ListBox>
+            </Grid>
+            <Grid Margin="5" Grid.Row="2" Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="32"></RowDefinition>
+                    <RowDefinition Height="1*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Border Grid.RowSpan="2" CornerRadius="15" BorderThickness="2" BorderBrush="Black"></Border>
+                
+                <TextBlock Margin="0, 5, 0, 0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center">每日需做</TextBlock>
+                <ListBox Margin="5, 0, 5, 12" x:Name="TaskList" Grid.Row="1">
+                </ListBox>
+            </Grid>
+            
         </Grid>
         <Grid Grid.Column="2">
             <Grid.RowDefinitions>

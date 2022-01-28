@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DesktopUtility.Widget"
-        
         mc:Ignorable="d" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
         Title="输入应用名称" FontFamily="Microsoft YaHei UI" FontSize="14" >
     <Grid Margin="5">

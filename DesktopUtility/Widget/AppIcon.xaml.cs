@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DesktopUtility.Widget;
+using System;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,8 +14,10 @@ namespace DesktopUtility
     /// </summary>
     public partial class AppIcon : UserControl
     {
-        public readonly Data.IconData Data;
+        public  Data.IconData Data;
         public const int duration = 200;
+        public Process? process = null;
+        public static Color BACKGROUND = Color.FromArgb(80, 211, 211, 211);
 
         public AppIcon()
         {
@@ -42,7 +45,7 @@ namespace DesktopUtility
                 Path = path,
                 Name = name
             };
-
+             
             NameLabel.Text = name;
         }
 
@@ -51,9 +54,9 @@ namespace DesktopUtility
             ColorAnimation animation = new()
             {
                 From = Util.ColorUtil.Transparent,
-                To = System.Windows.Media.Color.FromArgb(200, 211, 211, 211),
+                To = BACKGROUND,
                 Duration = TimeSpan.FromMilliseconds(duration),
-                AccelerationRatio = 1
+                AccelerationRatio = 0.5
             };
 
 
@@ -66,9 +69,9 @@ namespace DesktopUtility
             ColorAnimation animation = new()
             {
                 To = Util.ColorUtil.Transparent,
-                From = System.Windows.Media.Color.FromArgb(200, 211, 211, 211),
+                From = BACKGROUND,
                 Duration = TimeSpan.FromMilliseconds(duration),
-                AccelerationRatio = 1
+                AccelerationRatio = 0.5
             };
 
 
@@ -81,7 +84,7 @@ namespace DesktopUtility
             var bitmap = Util.ImageUtil.GetEXEIcon(Data.Path);
             if (bitmap == null)
             {
-                MessageBox.Show("无法获取图标（使用默认图标）", "错误");
+                //MessageBox.Show("无法获取图标（使用默认图标）", "错误");
                 bitmap = DesktopUtility.Resources.Resource1.app_default_icon;
             }
 
@@ -92,29 +95,53 @@ namespace DesktopUtility
         {
             if (e.ChangedButton.Equals(MouseButton.Left))
             {
-                if (Data.Path != "" && Data.Path != null)
-                {
-                    var p = new Process();
-                    p.StartInfo.FileName = Data.Path;
-                    p.Start();
-                }
+                StartProcess();
             }
-
         }
+
+        private void StartProcess()
+        {
+            if (Data.Path != String.Empty)
+            {
+                process = new Process();
+                process.StartInfo.FileName = Data.Path;
+                process.Start();
+            }
+        }
+
 
         private void StartItem_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show(brush.GetType().ToString());
+            StartProcess();
         }
 
         private void DeleteItem_Click(object sender, RoutedEventArgs e)
         {
-
+            var result = MessageBox.Show($"删除 {Data} ?", "删除", MessageBoxButton.OKCancel);
+            if (result == MessageBoxResult.OK)
+            {
+                DesktopUtility.Data.IconFactory.Remove(Data);
+                if (App.Current.MainWindow != null)
+                {
+                    var window = (MainWindow)App.Current.MainWindow;
+                    window.ReLayout();
+                }
+            }
         }
 
         private void RenameItem_Click(object sender, RoutedEventArgs e)
         {
+            IconNameDialog dialog = new(Data.Name)
+            {
+                Title = "重命名"
+            };
+            dialog.ShowDialog();
 
+            if (dialog.ok)
+            {
+                NameLabel.Text = dialog.IconName;
+                Data.Name = dialog.IconName;
+            }
         }
     }
 }
