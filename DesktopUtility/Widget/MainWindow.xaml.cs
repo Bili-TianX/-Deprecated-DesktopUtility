@@ -1,6 +1,8 @@
 ﻿using DesktopUtility.Util;
 using DesktopUtility.Widget;
+using Hardcodet.Wpf.TaskbarNotification;
 using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
@@ -13,14 +15,17 @@ namespace DesktopUtility
     public unsafe partial class MainWindow : Window
     {
         public const int COLUMN_COUNT = 1;
-        public const bool onBottom = false;
+        public const bool onBottom = true;
         public static Style? boxItemStyle;
+        public TaskbarIcon taskbarIcon;
+        public ContextMenu iconMenu;
 
         private static IntPtr SearchDesktopHandle()
         {
             IntPtr hRoot = Util.WinAPI.GetDesktopWindow();
             IntPtr hDesktop = Util.WinAPI.FindWindowEx(hRoot, IntPtr.Zero, "WorkerW", string.Empty);
-            while (true)
+            return hDesktop;
+            /*while (true)
             {
                 IntPtr hShellDll = Util.WinAPI.FindWindowEx(hDesktop, IntPtr.Zero, "SHELLDLL_DefView", string.Empty);
                 if (hShellDll != IntPtr.Zero)
@@ -29,6 +34,12 @@ namespace DesktopUtility
                 }
                 hDesktop = Util.WinAPI.FindWindowEx(hRoot, hDesktop, "WorkerW", string.Empty);
             }
+            return IntPtr.Zero;*/
+        }
+
+        ~MainWindow()
+        {
+            taskbarIcon.Dispose();
         }
 
         private void MainWindow_onLoaded(object sender, EventArgs e)
@@ -51,7 +62,7 @@ namespace DesktopUtility
         public unsafe MainWindow()
         {
             InitializeComponent();
-
+            iconMenu = new ContextMenu();
             Background = new System.Windows.Media.ImageBrush(Util.ImageUtil.ToImageSource(DesktopUtility.Resources.Resource1.bg2));
             System.Collections.ICollection? values = App.Current.MainWindow.Resources.Values;
 
@@ -75,6 +86,26 @@ namespace DesktopUtility
             addAppItem.Icon = Util.ImageUtil.ToImage(DesktopUtility.Resources.Resource1.addIcon);
 
             ReLayout();
+
+            taskbarIcon = new TaskbarIcon()
+            {
+                Visibility = Visibility.Visible,
+                Icon = DesktopUtility.Resources.Resource1.exeIcon,
+                ToolTipText = "DesktopUtility",
+                ContextMenu = iconMenu,
+                MenuActivation = PopupActivationMode.RightClick
+            };
+
+            var item = new MenuItem()
+            {
+                Header = "退出"
+            };
+            item.Click += (o, e) =>
+            {
+                Environment.Exit(0);
+            };
+
+            iconMenu.Items.Add(item);
         }
 
         public void ReLayout()
@@ -119,7 +150,7 @@ namespace DesktopUtility
 
         private void AddIcon(Data.IconData data)
         {
-            AppIcon? icon = new AppIcon(data);
+            AppIcon? icon = new(data);
             Data.IconFactory.icons.Add(icon);
             AddIcon(icon);
         }

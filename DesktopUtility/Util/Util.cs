@@ -94,7 +94,7 @@ namespace DesktopUtility.Util
         public static MemoryStream ToStream(Bitmap bitmap)
         {
             MemoryStream stream = new();
-            bitmap.Save(stream, ImageFormat.Png);
+            bitmap.Save(stream, ImageFormat.Icon);
             return stream;
         }
 

@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:DesktopUtility" xmlns:widget="clr-namespace:DesktopUtility.Widget"
+        xmlns:local="clr-namespace:DesktopUtility" xmlns:widget="clr-namespace:DesktopUtility.Widget" xmlns:tb="http://www.hardcodet.net/taskbar"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen" WindowStyle="None" ResizeMode="NoResize"
         Loaded="MainWindow_onLoaded"
         Title="DesktopUtility"  Width="1920" Height="1080" FontFamily="Microsoft YaHei UI" FontWeight="Medium" FontSize="14">
@@ -62,8 +62,10 @@
         <ImageBrush/>
     </Window.Background>
 
+    
+    
     <Window.ContextMenu>
-        <ContextMenu>
+        <ContextMenu Name="MyMenu">
             <MenuItem x:Name="addAppItem" Header="添加应用" Click="MenuItem_Click"></MenuItem>
         </ContextMenu>
     </Window.ContextMenu>
@@ -81,8 +83,6 @@
                 <RowDefinition Height="64"></RowDefinition>
                 <RowDefinition Height="1*"></RowDefinition>
             </Grid.RowDefinitions>
-
-
 
             <TextBlock FontSize="24" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">应用</TextBlock>
             <Grid Grid.Row="1"  x:Name="LaunchPad">
