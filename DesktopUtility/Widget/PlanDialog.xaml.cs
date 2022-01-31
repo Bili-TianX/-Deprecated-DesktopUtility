@@ -9,7 +9,7 @@ namespace DesktopUtility.Widget
     public partial class PlanDialog : Window
     {
         public bool ok = false;
-        public Data.PlanData Data => new Data.PlanData()
+        public Data.PlanData Data => new()
         {
             title = titleBox.Text,
             content = contentBox.Text,

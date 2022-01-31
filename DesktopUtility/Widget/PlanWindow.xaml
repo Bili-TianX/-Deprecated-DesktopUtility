@@ -1,0 +1,99 @@
+﻿<Window x:Class="DesktopUtility.Widget.PlanWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DesktopUtility.Widget"
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen"
+        Title="计划列表" Height="450" Width="800">
+
+    <Window.Resources>
+        <ControlTemplate x:Key="MyItem" TargetType="ListBoxItem">
+            <Border x:Name="border" CornerRadius="0" Margin="2" BorderBrush="Black" BorderThickness="0,0,0,0">
+                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                    Margin="10,0,0,0" />
+            </Border>
+
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Foreground" Value="#FF46679A" />
+                    <Setter TargetName="border" Property="Background" Value="white" />
+                    <Setter TargetName="border" Property="BorderBrush" Value="#FF46679A" />
+                    <Setter TargetName="border" Property="BorderThickness" Value="4,0,0,0.5" />
+                </Trigger>
+
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsMouseOver" Value="True" />
+                        <Condition Property="IsSelected" Value="False" />
+                    </MultiTrigger.Conditions>
+                    <MultiTrigger.Setters>
+                        <Setter Property="Foreground" Value="#FF46679A" />
+                        <Setter TargetName="border" Property="Background" Value="white" />
+                        <Setter TargetName="border" Property="BorderBrush" Value="#FF46679A" />
+                        <Setter TargetName="border" Property="BorderThickness" Value="0,0,0,0.5" />
+                    </MultiTrigger.Setters>
+                </MultiTrigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+        
+        <Style TargetType="ListBoxItem" x:Key="MyListStyle">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <!--前景色-->
+            <Setter Property="Foreground" Value="Black" />
+            <!--高度-->
+            <Setter Property="Height" Value="40" />
+            <!--字体大小-->
+            <Setter Property="FontSize" Value="16" />
+            <!--对齐-->
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Template" Value="{StaticResource MyItem}" />
+        </Style>
+    </Window.Resources>
+
+    <Window.ContextMenu>
+        <ContextMenu>
+            <MenuItem x:Name="modifyItem" Click="modifyItem_Click">修改计划</MenuItem>
+            <MenuItem x:Name="deleteItem" Click="deleteItem_Click">删除计划</MenuItem>
+        </ContextMenu>
+    </Window.ContextMenu>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="48"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.75*"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold" FontSize="24" >计划列表</TextBlock>
+        <ListBox x:Name="list" Grid.Row="1" Margin="5">
+        </ListBox>
+        <Grid x:Name="dataView" Margin="5" Grid.Row="1" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition Height="1.5*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.3*"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center">开始时间</TextBlock>
+            <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center">结束时间</TextBlock>
+            <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center">备注</TextBlock>
+            <TextBlock x:Name="startBlock" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">&lt;空&gt;</TextBlock>
+            <TextBlock x:Name="endBlock"  Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">&lt;空&gt;</TextBlock>
+            <TextBlock x:Name="contentBlock" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">&lt;空&gt;</TextBlock>
+
+        </Grid>
+
+    </Grid>
+</Window>

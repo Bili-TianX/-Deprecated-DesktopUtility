@@ -4,6 +4,7 @@ using Hardcodet.Wpf.TaskbarNotification;
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms;
 using System.Windows.Interop;
 
 namespace DesktopUtility
@@ -38,6 +39,7 @@ namespace DesktopUtility
 
         ~MainWindow()
         {
+            taskbarIcon.Visibility = Visibility.Hidden;
             taskbarIcon.Dispose();
         }
 
@@ -58,6 +60,10 @@ namespace DesktopUtility
                 IntPtr desktopHandle = SearchDesktopHandle();
                 Util.WinAPI.SetParent(hWnd, desktopHandle);
             }
+            AttachPlan();
+            Width = SystemInformation.WorkingArea.Size.Width;
+            Height = SystemInformation.WorkingArea.Size.Height;
+            Left = Top = 0;
         }
 
         public unsafe MainWindow()
@@ -85,6 +91,8 @@ namespace DesktopUtility
             }
             Icon = Util.ImageUtil.ToImageSource(DesktopUtility.Resources.Resource1.icon);
             addAppItem.Icon = Util.ImageUtil.ToImage(DesktopUtility.Resources.Resource1.addIcon);
+            addPlanItem.Icon = Util.ImageUtil.ToImage(DesktopUtility.Resources.Resource1.addIcon);
+            showPlanItem.Icon = Util.ImageUtil.ToImage(DesktopUtility.Resources.Resource1.showIcon);
 
             ReLayout();
 
@@ -103,10 +111,31 @@ namespace DesktopUtility
             };
             item.Click += (o, e) =>
             {
-                Environment.Exit(0);
+                System.Windows.Application.Current.Shutdown(0);
             };
 
             iconMenu.Items.Add(item);
+        }
+
+        public void AttachPlan()
+        {
+            foreach (Data.PlanData plan in Data.PlanFactory.plans)
+            {
+                AttachPlan(plan);
+            }
+        }
+
+        public void AttachPlan(Data.PlanData plan)
+        {
+            DateTime begin = new DateTime(plan.begin.Year, plan.begin.Month, plan.begin.Day);
+            DateTime end = new DateTime(plan.end.Year, plan.end.Month, plan.end.Day);
+            foreach (DateLabel? item in calendar.list)
+            {
+                if (item != null && begin <= item.Time && item.Time <= end)
+                {
+                    item.AttachPlan();
+                }
+            }
         }
 
         public void ReLayout()
@@ -174,6 +203,28 @@ namespace DesktopUtility
             Grid.SetRow(icon, index / COLUMN_COUNT);
 
             icon.SetImage();
+        }
+
+        private void addPlanItem_Click(object sender, RoutedEventArgs e)
+        {
+            PlanDialog? dialog = new PlanDialog();
+            dialog.ShowDialog();
+            if (dialog.ok)
+            {
+                Data.PlanData plan = dialog.Data;
+                Data.PlanFactory.plans.Add(plan);
+                AttachPlan(plan);
+            }
+        }
+
+        public void ShowPlan()
+        {
+            new PlanWindow().ShowDialog();
+        }
+
+        private void showPlanItem_Click(object sender, RoutedEventArgs e)
+        {
+            ShowPlan();
         }
     }
 }

@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:DesktopUtility"
              mc:Ignorable="d" 
              d:DesignHeight="100" d:DesignWidth="72">
-    <Grid Width="auto" Height="96" Margin="5" x:Name="back" MouseDown="back_MouseDown" MouseEnter="back_MouseEnter" MouseLeave="back_MouseLeave" Background="Transparent">
+    <Grid Width="auto" Height="108" Margin="5" x:Name="back" MouseDown="back_MouseDown" MouseEnter="back_MouseEnter" MouseLeave="back_MouseLeave" Background="Transparent">
 
 
         <Grid.ContextMenu>

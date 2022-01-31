@@ -1,4 +1,6 @@
-﻿using System.Windows.Controls;
+﻿using System;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -9,9 +11,13 @@ namespace DesktopUtility.Widget
     /// </summary>
     public partial class DateLabel : UserControl
     {
-        public DateLabel()
+        public bool attached = false;
+        public DateTime Time;
+
+        public DateLabel(int year, int month, int day)
         {
             InitializeComponent();
+            Time = new(year, month, day);
         }
 
         private void Label_MouseEnter(object sender, MouseEventArgs e)
@@ -26,16 +32,25 @@ namespace DesktopUtility.Widget
             border.Background = new SolidColorBrush(Util.ColorUtil.Transparent);
         }
 
+        public void AttachPlan()
+        {
+            attached = true;
+            block.Foreground = new SolidColorBrush(Util.ColorUtil.Red);
+            block.FontWeight = FontWeights.ExtraBold;
+        }
+
+        public void RemovePlan()
+        {
+            attached = false;
+            block.Foreground = new SolidColorBrush(Util.ColorUtil.Black);
+            block.FontWeight = FontWeights.Normal;
+        }
+
         private void Label_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (e.ChangedButton == MouseButton.Left)
+            if (attached)
             {
-                PlanDialog? dialog = new PlanDialog();
-                dialog.ShowDialog();
-                if (dialog.ok)
-                {
-                    Data.PlanFactory.plans.Add(dialog.Data);
-                }
+                ((MainWindow)Application.Current.MainWindow).ShowPlan();
             }
         }
     }

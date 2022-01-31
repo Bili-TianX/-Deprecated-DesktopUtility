@@ -20,6 +20,37 @@ namespace DesktopUtility.Data
         public const string TargetFile = "plan.json";
         public static List<PlanData> plans = new();
 
+        public static bool CheckExistByTitle(string title)
+        {
+            foreach (PlanData plan in plans)
+            {
+                if (plan.title == title)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public static PlanData? GetByTitle(string? title)
+        {
+            if (title == null)
+            {
+                return null;
+            }
+
+            foreach (PlanData plan in plans)
+            {
+                if (plan.title == title)
+                {
+                    return plan;
+                }
+            }
+
+            return null;
+        }
+
         public static void LoadFromFile()
         {
             if (!Directory.Exists(TargetFolder))

@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DesktopUtility" xmlns:widget="clr-namespace:DesktopUtility.Widget" xmlns:tb="http://www.hardcodet.net/taskbar"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen" WindowStyle="None" ResizeMode="NoResize"
-        Loaded="MainWindow_onLoaded"
-        Title="DesktopUtility"  Width="1920" Height="1080" FontFamily="Microsoft YaHei UI" FontWeight="Medium" FontSize="14">
+        Loaded="MainWindow_onLoaded" ShowInTaskbar="False"
+        Title="DesktopUtility"  Width="1920" Height="1080" FontFamily="Microsoft YaHei UI" FontWeight="Medium" FontSize="20">
 
     <Window.Resources>
         <ControlTemplate x:Key="MySplitter" TargetType="GridSplitter">
@@ -67,6 +67,8 @@
     <Window.ContextMenu>
         <ContextMenu Name="MyMenu">
             <MenuItem x:Name="addAppItem" Header="添加应用" Click="MenuItem_Click"></MenuItem>
+            <MenuItem x:Name="addPlanItem" Header="添加计划" Click="addPlanItem_Click"></MenuItem>
+            <MenuItem x:Name="showPlanItem" Header="显示计划列表" Click="showPlanItem_Click"></MenuItem>
         </ContextMenu>
     </Window.ContextMenu>
     
@@ -96,15 +98,13 @@
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="64"></RowDefinition>
                 <RowDefinition Height="1.5*"></RowDefinition>
                 <RowDefinition Height="1*"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <TextBlock FontSize="24" Grid.Row="0" Grid.ColumnSpan="2"  HorizontalAlignment="Center" VerticalAlignment="Center">月计划</TextBlock>
-            <widget:MyCalendar Grid.Row="1" Grid.ColumnSpan="2"></widget:MyCalendar>
+            <widget:MyCalendar x:Name="calendar" Grid.Row="0" Grid.ColumnSpan="2"></widget:MyCalendar>
 
-            <Grid Margin="5" Grid.Row="2" Grid.Column="0">
+            <Grid Margin="5" Grid.Row="1" Grid.Column="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="32"></RowDefinition>
                     <RowDefinition Height="1*"></RowDefinition>
