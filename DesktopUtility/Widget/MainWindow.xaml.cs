@@ -2,7 +2,6 @@
 using DesktopUtility.Widget;
 using Hardcodet.Wpf.TaskbarNotification;
 using System;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
@@ -14,8 +13,8 @@ namespace DesktopUtility
     /// </summary>
     public unsafe partial class MainWindow : Window
     {
-        public const int COLUMN_COUNT = 1;
-        public const bool onBottom = true;
+        public const int COLUMN_COUNT = 3;
+        public const bool onBottom = false;
         public static Style? boxItemStyle;
         public TaskbarIcon taskbarIcon;
         public ContextMenu iconMenu;
@@ -46,7 +45,9 @@ namespace DesktopUtility
         {
             if (onBottom)
             {
+#pragma warning disable CS0162 // 检测到无法访问的代码
                 const int GWL_STYLE = (-16);
+#pragma warning restore CS0162 // 检测到无法访问的代码
                 const ulong WS_CHILD = 0x40000000;
                 IntPtr hWnd = new WindowInteropHelper(this).Handle;
                 ulong iWindowStyle = Util.WinAPI.GetWindowLong(hWnd, GWL_STYLE);
@@ -96,7 +97,7 @@ namespace DesktopUtility
                 MenuActivation = PopupActivationMode.RightClick
             };
 
-            var item = new MenuItem()
+            MenuItem? item = new MenuItem()
             {
                 Header = "退出"
             };

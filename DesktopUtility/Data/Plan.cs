@@ -1,0 +1,66 @@
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.IO;
+
+namespace DesktopUtility.Data
+{
+    public struct PlanData
+    {
+        public string title;
+        public string content;
+        public DateTime begin;
+        public DateTime end;
+    }
+
+    public static class PlanFactory
+    {
+        public const string TargetFolder = "./data/plan/";
+        public const string TargetFile = "plan.json";
+        public static List<PlanData> plans = new();
+
+        public static void LoadFromFile()
+        {
+            if (!Directory.Exists(TargetFolder))
+            {
+                Directory.CreateDirectory(TargetFolder);
+                return;
+            }
+            if (!File.Exists(TargetFolder + TargetFile))
+            {
+                return;
+            }
+
+            StreamReader reader = new(TargetFolder + TargetFile);
+            JArray? array = JArray.Parse(reader.ReadToEnd());
+            foreach (JToken? item in array)
+            {
+                object? obj = JsonConvert.DeserializeObject(item.ToString(), typeof(PlanData));
+                if (obj != null)
+                {
+                    plans.Add((PlanData)obj);
+                }
+            }
+
+            reader.Close();
+        }
+
+        public static void SaveToFile()
+        {
+            if (!Directory.Exists(TargetFolder))
+            {
+                Directory.CreateDirectory(TargetFolder);
+            }
+
+            StreamWriter writer = new(TargetFolder + TargetFile);
+            JArray array = new();
+            foreach (PlanData plan in plans)
+            {
+                array.Add(JObject.FromObject(plan));
+            }
+            writer.Write(array);
+            writer.Close();
+        }
+    }
+}

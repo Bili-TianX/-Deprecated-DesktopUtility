@@ -25,7 +25,18 @@ namespace DesktopUtility.Widget
             border.BorderBrush = new SolidColorBrush(Util.ColorUtil.Transparent);
             border.Background = new SolidColorBrush(Util.ColorUtil.Transparent);
         }
+
+        private void Label_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                PlanDialog? dialog = new PlanDialog();
+                dialog.ShowDialog();
+                if (dialog.ok)
+                {
+                    Data.PlanFactory.plans.Add(dialog.Data);
+                }
+            }
+        }
     }
-
-
 }

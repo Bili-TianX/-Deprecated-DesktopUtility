@@ -13,9 +13,15 @@
     <DebugType>embedded</DebugType>
     <GenerateDocumentationFile>False</GenerateDocumentationFile>
     <PackageIcon>icon.png</PackageIcon>
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <Optimize>True</Optimize>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Optimize>True</Optimize>
     <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
   </PropertyGroup>
@@ -24,16 +30,12 @@
     <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="images\StartScreen.png" />
-  </ItemGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+  </PropertyGroup>
 
   <ItemGroup>
     <Content Include="images\exeIcon.ico" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <SplashScreen Include="images\StartScreen.png" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,0 +1,37 @@
+﻿<Window x:Class="DesktopUtility.Widget.PlanDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DesktopUtility.Widget"
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen"
+        Title="PlanDialog" Height="450" Width="500">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="48"></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="1.5*"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.3*"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.ColumnSpan="3" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="24">新建计划</TextBlock>
+        <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center">标题</TextBlock>
+        <TextBlock x:Name="startBlock" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center">开始时间</TextBlock>
+        <TextBlock x:Name="endBlock" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center">结束时间</TextBlock>
+        <TextBlock Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center">备注</TextBlock>
+
+        <TextBox x:Name="titleBox" Margin="5" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center"></TextBox>
+        <TextBox x:Name="startTimeBox" Margin="5" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" TextChanged="startTimeBox_TextChanged"></TextBox>
+        <TextBox x:Name="endTimeBox" Margin="5" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" TextChanged="endTimeBox_TextChanged"></TextBox>
+        <TextBox x:Name="contentBox" Margin="5" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2"></TextBox>
+        <Button x:Name="okButton" Grid.Row="5" Grid.Column="1" FontSize="24" Margin="15" Click="okButton_Click">确定</Button>
+        <Button x:Name="cancelButton"  Grid.Row="5" Grid.Column="2" Margin="15" FontSize="24" Click="cancelButton_Click">取消</Button>
+    </Grid>
+</Window>
