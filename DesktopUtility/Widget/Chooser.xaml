@@ -1,0 +1,31 @@
+﻿<Window x:Class="DesktopUtility.Widget.Chooser"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DesktopUtility.Widget"
+        mc:Ignorable="d" FontSize="20"
+        Title="选择" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="48"></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="48"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+
+
+        <TextBlock VerticalAlignment="Center"  Grid.ColumnSpan="2" HorizontalAlignment="Center">选择你要添加的应用</TextBlock>
+        
+        <ListBox Margin="5" Grid.Row="1" Grid.ColumnSpan="2" x:Name="listBox">
+        </ListBox>
+
+        <Button Margin="5" Grid.Row="2" Click="Button_Click">确定</Button>
+        <Button Margin="5" Grid.Row="2" Grid.Column="1" x:Name="cancelButton" Click="cancelButton_Click">取消</Button>
+        
+    </Grid>
+</Window>

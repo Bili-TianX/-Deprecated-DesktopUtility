@@ -21,7 +21,7 @@
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <TextBlock Grid.Row="0" Grid.ColumnSpan="3" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="24">新建计划</TextBlock>
+        <TextBlock x:Name="title" Grid.Row="0" Grid.ColumnSpan="3" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="24">新建计划</TextBlock>
         <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center">标题</TextBlock>
         <TextBlock x:Name="startBlock" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center">开始时间</TextBlock>
         <TextBlock x:Name="endBlock" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center">结束时间</TextBlock>

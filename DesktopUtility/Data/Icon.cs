@@ -1,7 +1,11 @@
-﻿using Newtonsoft.Json;
+﻿using DesktopUtility.Widget;
+using IWshRuntimeLibrary;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Windows;
 
 namespace DesktopUtility.Data
 {
@@ -105,29 +109,91 @@ namespace DesktopUtility.Data
             return result;
         }
 
+        private static List<FileInfo> getAll()
+        {
+            string? path = Environment.GetFolderPath(Environment.SpecialFolder.CommonPrograms);
+            Stack<DirectoryInfo> dirs = new();
+            List<FileInfo> files = new();
+            List<FileInfo> result = new();
+            WshShell shell = new WshShell();
+
+            dirs.Push(new DirectoryInfo(path));
+            while (dirs.Count > 0)
+            {
+                DirectoryInfo? dir = dirs.Pop();
+                foreach (DirectoryInfo? dirInfo in dir.GetDirectories())
+                {
+                    dirs.Push(dirInfo);
+                }
+
+                foreach (FileInfo? file in dir.GetFiles())
+                {
+                    files.Add(file);
+                }
+            }
+
+            foreach (FileInfo? file in files)
+            {
+                if (file.Extension == ".lnk")
+                {
+                    try
+                    {
+                        FileInfo? target = new FileInfo(((IWshShortcut)shell.CreateShortcut(file.FullName)).TargetPath);
+                        if (target.Extension == ".exe")
+                        {
+                            result.Add(target);
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        continue;
+                    }
+                }
+            }
+
+            return result;
+        }
+
         public static void LoadFromFile()
         {
             if (!Directory.Exists(TargetFolder))
             {
                 Directory.CreateDirectory(TargetFolder);
-                return;
-            }
-            if (!File.Exists(TargetFolder + TargetFile))
-            {
-                return;
-            }
-            StreamReader reader = new(TargetFolder + TargetFile);
-            JArray? array = JArray.Parse(reader.ReadToEnd());
-            foreach (JToken? item in array)
-            {
-                object? obj = JsonConvert.DeserializeObject(item.ToString(), typeof(IconData));
-                if (obj != null)
-                {
-                    icons.Add(new AppIcon((IconData)obj));
-                }
             }
 
-            reader.Close();
+            if (!System.IO.File.Exists(TargetFolder + TargetFile))
+            {
+                List<FileInfo>? list = getAll();
+                Chooser? dialog = new Chooser(list);
+                dialog.ShowDialog();
+                if (dialog.ok)
+                {
+                    foreach (FileInfo? item in dialog.result)
+                    {
+                        icons.Add(new AppIcon(new IconData(item.Name, item.FullName)));
+                    }
+                }
+            }
+            else
+            {
+                StreamReader reader = new(TargetFolder + TargetFile);
+                JArray? array = JArray.Parse(reader.ReadToEnd());
+                foreach (JToken? item in array)
+                {
+                    IconData? obj = (IconData?)JsonConvert.DeserializeObject(item.ToString(), typeof(IconData));
+                    if (obj != null)
+                    {
+                        if (!System.IO.File.Exists(obj?.Path))
+                        {
+                            MessageBox.Show($"无法找到{obj?.Name}({obj?.Path}), 请查看软件是否已卸载", "警告");
+                            continue;
+                        }
+                        icons.Add(new AppIcon((IconData)obj));
+                    }
+                }
+
+                reader.Close();
+            }
         }
 
         public static void SaveToFile()

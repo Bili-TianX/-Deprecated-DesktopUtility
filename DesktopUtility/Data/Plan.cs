@@ -6,12 +6,19 @@ using System.IO;
 
 namespace DesktopUtility.Data
 {
-    public struct PlanData
+    public class PlanData
     {
         public string title;
         public string content;
         public DateTime begin;
         public DateTime end;
+
+        public bool contain(DateTime time)
+        {
+            return time.Day >= begin.Day && time.Day <= end.Day &&
+                time.Month >= begin.Month && time.Month <= end.Month &&
+                time.Year >= begin.Year && time.Year <= end.Year;
+        }
     }
 
     public static class PlanFactory
@@ -31,6 +38,18 @@ namespace DesktopUtility.Data
             }
 
             return false;
+        }
+
+        public static void RemoveByTitle(string title)
+        {
+            foreach (PlanData plan in plans)
+            {
+                if (plan.title == title)
+                {
+                    plans.Remove(plan);
+                    return;
+                }
+            }
         }
 
         public static PlanData? GetByTitle(string? title)

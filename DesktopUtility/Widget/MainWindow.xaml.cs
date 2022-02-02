@@ -14,27 +14,23 @@ namespace DesktopUtility
     /// </summary>
     public unsafe partial class MainWindow : Window
     {
-        public const int COLUMN_COUNT = 3;
-        public const bool onBottom = false;
+        public const int COLUMN_COUNT = 4;
+        public const bool onBottom = true;
         public static Style? boxItemStyle;
         public TaskbarIcon taskbarIcon;
         public ContextMenu iconMenu;
 
         private static IntPtr SearchDesktopHandle()
         {
-            IntPtr hRoot = Util.WinAPI.GetDesktopWindow();
-            IntPtr hDesktop = Util.WinAPI.FindWindowEx(hRoot, IntPtr.Zero, "WorkerW", string.Empty);
-            return hDesktop;
-            /*while (true)
+            IntPtr desktop = Util.WinAPI.GetDesktopWindow();
+            IntPtr hWorkerW = IntPtr.Zero;
+            IntPtr hShellViewWin = IntPtr.Zero;
+            do
             {
-                IntPtr hShellDll = Util.WinAPI.FindWindowEx(hDesktop, IntPtr.Zero, "SHELLDLL_DefView", string.Empty);
-                if (hShellDll != IntPtr.Zero)
-                {
-                    return hDesktop;
-                }
-                hDesktop = Util.WinAPI.FindWindowEx(hRoot, hDesktop, "WorkerW", string.Empty);
-            }
-            return IntPtr.Zero;*/
+                hWorkerW = Util.WinAPI.FindWindowEx(desktop, hWorkerW, "WorkerW", string.Empty);
+                hShellViewWin = Util.WinAPI.FindWindowEx(hWorkerW, IntPtr.Zero, "SHELLDLL_DefView", string.Empty);
+            } while (hShellViewWin == IntPtr.Zero && hWorkerW != IntPtr.Zero);
+            return hShellViewWin;
         }
 
         ~MainWindow()
@@ -93,7 +89,9 @@ namespace DesktopUtility
             addAppItem.Icon = Util.ImageUtil.ToImage(DesktopUtility.Resources.Resource1.addIcon);
             addPlanItem.Icon = Util.ImageUtil.ToImage(DesktopUtility.Resources.Resource1.addIcon);
             showPlanItem.Icon = Util.ImageUtil.ToImage(DesktopUtility.Resources.Resource1.showIcon);
+            editTimeItem.Icon = Util.ImageUtil.ToImage(DesktopUtility.Resources.Resource1.renameIcon);
 
+            Data.IconFactory.LoadFromFile();
             ReLayout();
 
             taskbarIcon = new TaskbarIcon()
@@ -119,6 +117,11 @@ namespace DesktopUtility
 
         public void AttachPlan()
         {
+            foreach (DateLabel? item in calendar.list)
+            {
+                item.RemovePlan();
+            }
+
             foreach (Data.PlanData plan in Data.PlanFactory.plans)
             {
                 AttachPlan(plan);
@@ -131,9 +134,12 @@ namespace DesktopUtility
             DateTime end = new DateTime(plan.end.Year, plan.end.Month, plan.end.Day);
             foreach (DateLabel? item in calendar.list)
             {
-                if (item != null && begin <= item.Time && item.Time <= end)
+                if (item != null)
                 {
-                    item.AttachPlan();
+                    if (begin <= item.Time && item.Time <= end)
+                    {
+                        item.AttachPlan();
+                    }
                 }
             }
         }
@@ -217,14 +223,26 @@ namespace DesktopUtility
             }
         }
 
-        public void ShowPlan()
+        public void ShowPlan(DateTime? time = null)
         {
-            new PlanWindow().ShowDialog();
+            if (time != null)
+            {
+                new PlanWindow((DateTime)time).ShowDialog();
+            }
+            else
+            {
+                new PlanWindow().ShowDialog();
+            }
         }
 
         private void showPlanItem_Click(object sender, RoutedEventArgs e)
         {
             ShowPlan();
+        }
+
+        private void editTimeItem_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

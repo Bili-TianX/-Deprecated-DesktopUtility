@@ -68,7 +68,8 @@
         <ContextMenu Name="MyMenu">
             <MenuItem x:Name="addAppItem" Header="添加应用" Click="MenuItem_Click"></MenuItem>
             <MenuItem x:Name="addPlanItem" Header="添加计划" Click="addPlanItem_Click"></MenuItem>
-            <MenuItem x:Name="showPlanItem" Header="显示计划列表" Click="showPlanItem_Click"></MenuItem>
+            <MenuItem x:Name="showPlanItem" Header="显示所有计划列表" Click="showPlanItem_Click"></MenuItem>
+            <MenuItem x:Name="editTimeItem" Header="修改时间" Click="editTimeItem_Click"></MenuItem>
         </ContextMenu>
     </Window.ContextMenu>
     

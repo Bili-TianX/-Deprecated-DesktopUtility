@@ -17,7 +17,6 @@ namespace DesktopUtility
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            Data.IconFactory.LoadFromFile();
             Data.PlanFactory.LoadFromFile();
         }
 

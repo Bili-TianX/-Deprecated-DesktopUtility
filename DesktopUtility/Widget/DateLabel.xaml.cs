@@ -35,7 +35,7 @@ namespace DesktopUtility.Widget
         public void AttachPlan()
         {
             attached = true;
-            block.Foreground = new SolidColorBrush(Util.ColorUtil.Red);
+            block.Foreground = new SolidColorBrush(Color.FromRgb(123, 131, 167));
             block.FontWeight = FontWeights.ExtraBold;
         }
 
@@ -48,10 +48,7 @@ namespace DesktopUtility.Widget
 
         private void Label_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (attached)
-            {
-                ((MainWindow)Application.Current.MainWindow).ShowPlan();
-            }
+            ((MainWindow)Application.Current.MainWindow).ShowPlan(Time);
         }
     }
 }

@@ -9,6 +9,7 @@ namespace DesktopUtility.Widget
     public partial class PlanDialog : Window
     {
         public bool ok = false;
+        private readonly bool ignoreTitle;
         public Data.PlanData Data => new()
         {
             title = titleBox.Text,
@@ -17,9 +18,10 @@ namespace DesktopUtility.Widget
             end = DateTime.Parse(endTimeBox.Text)
         };
 
-        public PlanDialog()
+        public PlanDialog(bool ignoreTitle = false)
         {
             InitializeComponent();
+            this.ignoreTitle = ignoreTitle;
             DateTime time = System.DateTime.Now;
             startTimeBox.Text = time.ToString();
             endTimeBox.Text = time.AddDays(1).ToString();
@@ -32,6 +34,11 @@ namespace DesktopUtility.Widget
             if (titleBox.Text.Length == 0)
             {
                 MessageBox.Show("标题为空！", "错误");
+                return;
+            }
+            else if (!ignoreTitle && DesktopUtility.Data.PlanFactory.CheckExistByTitle(titleBox.Text))
+            {
+                MessageBox.Show("标题重复！", "错误");
                 return;
             }
             else

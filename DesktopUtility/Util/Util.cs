@@ -108,7 +108,7 @@ namespace DesktopUtility.Util
 
 
 
-        public static unsafe Bitmap? GetEXEIcon(string path)
+        public static unsafe Bitmap GetEXEIcon(string path)
         {
             IntPtr[] largeIcons, smallIcons;  //存放大/小图标的指针数组  
 #pragma warning disable CS8625 // 无法将 null 字面量转换为非 null 的引用类型。
@@ -123,38 +123,16 @@ namespace DesktopUtility.Util
                 if (largeIcons.Length > 0)
                 {
                     Icon? icon = Icon.FromHandle(largeIcons[0]);
-                    //foreach (var item in largeIcons)
-                    //{
-                    //    WinAPI.DestroyIcon(item);
-                    //}
-                    //foreach (var item in smallIcons)
-                    //{
-                    //    WinAPI.DestroyIcon(item);
-                    //}
                     return icon.ToBitmap();
                 }
                 else if (smallIcons.Length > 0)
                 {
                     Icon? icon = Icon.FromHandle(smallIcons[0]);
-                    //foreach (var item in largeIcons)
-                    //{
-                    //    WinAPI.DestroyIcon(item);
-                    //}
-                    //foreach (var item in smallIcons)
-                    //{
-                    //    WinAPI.DestroyIcon(item);
-                    //}
                     return icon.ToBitmap();
                 }
-                else
-                {
-                    return null;
-                }
             }
-            else
-            {
-                return null;
-            }
+
+            return DesktopUtility.Resources.Resource1.app_default_icon;
         }
     }
 }

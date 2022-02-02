@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DesktopUtility.Widget"
-        mc:Ignorable="d" WindowStartupLocation="CenterScreen"
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen" FontSize="20"
         Title="计划列表" Height="450" Width="800">
 
     <Window.Resources>
@@ -55,8 +55,9 @@
 
     <Window.ContextMenu>
         <ContextMenu>
-            <MenuItem x:Name="modifyItem" Click="modifyItem_Click">修改计划</MenuItem>
-            <MenuItem x:Name="deleteItem" Click="deleteItem_Click">删除计划</MenuItem>
+            <MenuItem x:Name="addItem" Header="添加计划" Click="addItem_Click"></MenuItem>
+            <MenuItem x:Name="modifyItem" Header="修改计划" Click="modifyItem_Click"></MenuItem>
+            <MenuItem x:Name="deleteItem" Header="删除计划" Click="deleteItem_Click"></MenuItem>
         </ContextMenu>
     </Window.ContextMenu>
     

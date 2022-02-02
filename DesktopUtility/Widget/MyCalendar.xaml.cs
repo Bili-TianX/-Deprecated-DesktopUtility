@@ -25,6 +25,7 @@ namespace DesktopUtility.Widget
             year = now.Year;
             month = now.Month;
             SetTime(now.Year, now.Month);
+            title.Text = $"{year}年{month}月";
         }
 
         public void SetTime(int year, int month)

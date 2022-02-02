@@ -29,7 +29,7 @@
 
         </Border>
 
-        <TextBlock Grid.ColumnSpan="7" FontSize="24" FontWeight="ExtraBold" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center">2022年1月</TextBlock>
+        <TextBlock x:Name="title" Grid.ColumnSpan="7" FontSize="24" FontWeight="ExtraBold" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
         <TextBlock Text="一" FontSize="18" FontWeight="Bold" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         <TextBlock Text="二" FontSize="18" FontWeight="Bold" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         <TextBlock Text="三" FontSize="18" FontWeight="Bold" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center"/>
