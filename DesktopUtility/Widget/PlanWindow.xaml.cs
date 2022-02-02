@@ -142,7 +142,7 @@ namespace DesktopUtility.Widget
                 {
                     Data.PlanFactory.RemoveByTitle(Item.Content.ToString());
                     UpdatePlans();
-                    ((MainWindow)App.Current.MainWindow).AttachPlan();
+                    ((MainWindow)App.Current.MainWindow).calendar.AttachPlan();
                     startBlock.Text = endBlock.Text = contentBlock.Text = "<空>";
                 }
             }
@@ -161,7 +161,7 @@ namespace DesktopUtility.Widget
             {
                 Data.PlanFactory.plans.Add(dialog.Data);
                 UpdatePlans();
-                ((MainWindow)App.Current.MainWindow).AttachPlan();
+                ((MainWindow)App.Current.MainWindow).calendar.AttachPlan();
                 startBlock.Text = endBlock.Text = contentBlock.Text = "<空>";
             }
         }

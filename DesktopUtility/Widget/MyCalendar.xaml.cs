@@ -48,6 +48,7 @@ namespace DesktopUtility.Widget
             foreach(UIElement item in list)
                 children.Remove(item);
 
+            this.list.Clear();
             MainGrid.RowDefinitions.Clear();
             MainGrid.RowDefinitions.Add(new RowDefinition()
             {
@@ -71,7 +72,7 @@ namespace DesktopUtility.Widget
             });
             Grid.SetRowSpan(border, MainGrid.RowDefinitions.Count);
 
-            list.Clear();
+            this.list.Clear();
             for (int i = 1; i <= max_day; ++i)
             {
                 Widget.DateLabel? label = new(year, month, i);
@@ -79,7 +80,20 @@ namespace DesktopUtility.Widget
                 MainGrid.Children.Add(label);
                 Grid.SetRow(label, 2 + (i + week - 2) / 7);
                 Grid.SetColumn(label, (i + week - 2) % 7);
-                list.Add(label);
+                this.list.Add(label);
+            }
+
+            AttachPlan();
+        }
+
+        internal void AttachPlan()
+        {
+            foreach (DateLabel? item in list)
+            {
+                if (item != null)
+                {
+                    item.RemovePlan();
+                }
             }
 
             foreach (Data.PlanData plan in Data.PlanFactory.plans)
