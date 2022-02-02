@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DesktopUtility.Widget"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen" FontSize="24"
-        Title="修改时间" Height="450" Width="800">
+        Title="修改时间" Height="350" Width="500">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
@@ -21,11 +21,6 @@
         <TextBlock Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center">修改时间</TextBlock>
         <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center">年份</TextBlock>
         <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center">月份</TextBlock>
-        <ComboBox Grid.Row="1" Grid.Column="1" Margin="15">
-            <ComboBoxItem>
-                
-            </ComboBoxItem>
-        </ComboBox>
 
         <ComboBox Grid.Row="1" Grid.Column="1" Margin="15" x:Name="yearBox">
         </ComboBox>

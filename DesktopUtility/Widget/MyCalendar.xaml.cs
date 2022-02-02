@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -22,14 +24,14 @@ namespace DesktopUtility.Widget
             InitializeComponent();
 
             DateTime now = DateTime.Now;
-            year = now.Year;
-            month = now.Month;
             SetTime(now.Year, now.Month);
-            title.Text = $"{year}年{month}月";
         }
 
         public void SetTime(int year, int month)
         {
+            this.year = year;
+            this.month = month;
+            title.Text = $"{year}年{month}月";
             week = ((int)new DateTime(year, month, 1).DayOfWeek);
             max_day = Util.DateUtil.GetMaxDay(year, month);
             row_count = (int)Math.Ceiling((max_day + week) / 7.0);
@@ -39,6 +41,13 @@ namespace DesktopUtility.Widget
 
         public void ReLayout()
         {
+            UIElementCollection children = MainGrid.Children;
+            List<UIElement> list = new();
+            foreach (UIElement item in children)
+                if (Grid.GetRow(item) > 1) list.Add(item);
+            foreach(UIElement item in list)
+                children.Remove(item);
+
             MainGrid.RowDefinitions.Clear();
             MainGrid.RowDefinitions.Add(new RowDefinition()
             {
@@ -73,6 +82,21 @@ namespace DesktopUtility.Widget
                 list.Add(label);
             }
 
+            foreach (Data.PlanData plan in Data.PlanFactory.plans)
+            {
+                DateTime begin = new DateTime(plan.begin.Year, plan.begin.Month, plan.begin.Day);
+                DateTime end = new DateTime(plan.end.Year, plan.end.Month, plan.end.Day);
+                foreach (DateLabel? item in list)
+                {
+                    if (item != null)
+                    {
+                        if (begin <= item.Time && item.Time <= end)
+                        {
+                            item.AttachPlan();
+                        }
+                    }
+                }
+            }
         }
     }
 }

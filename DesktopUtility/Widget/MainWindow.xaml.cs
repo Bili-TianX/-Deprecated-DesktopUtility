@@ -56,7 +56,6 @@ namespace DesktopUtility
                 IntPtr desktopHandle = SearchDesktopHandle();
                 Util.WinAPI.SetParent(hWnd, desktopHandle);
             }
-            AttachPlan();
             Width = SystemInformation.WorkingArea.Size.Width;
             Height = SystemInformation.WorkingArea.Size.Height;
             Left = Top = 0;
@@ -93,6 +92,7 @@ namespace DesktopUtility
 
             Data.IconFactory.LoadFromFile();
             ReLayout();
+            
 
             taskbarIcon = new TaskbarIcon()
             {
@@ -242,7 +242,20 @@ namespace DesktopUtility
 
         private void editTimeItem_Click(object sender, RoutedEventArgs e)
         {
+            var dialog = new EditTimeDialog(calendar.year, calendar.month);
+            dialog.ShowDialog();
+            if (dialog.ok)
+            {
+                int year = dialog.Year;
+                int month = dialog.Month;
 
+                if (year != calendar.year || month != calendar.month)
+                {
+                    //TODO: change
+                    calendar.SetTime(year, month);
+                    AttachPlan();
+                }
+            }
         }
     }
 }
