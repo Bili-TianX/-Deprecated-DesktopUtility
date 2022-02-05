@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -44,9 +42,17 @@ namespace DesktopUtility.Widget
             UIElementCollection children = MainGrid.Children;
             List<UIElement> list = new();
             foreach (UIElement item in children)
-                if (Grid.GetRow(item) > 1) list.Add(item);
-            foreach(UIElement item in list)
+            {
+                if (Grid.GetRow(item) > 1)
+                {
+                    list.Add(item);
+                }
+            }
+
+            foreach (UIElement item in list)
+            {
                 children.Remove(item);
+            }
 
             this.list.Clear();
             MainGrid.RowDefinitions.Clear();

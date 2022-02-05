@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace DesktopUtility.Widget
 {
@@ -12,15 +13,15 @@ namespace DesktopUtility.Widget
     public partial class Chooser : Window
     {
         public bool ok = false;
-        private readonly List<FileInfo> ori;
-        public List<FileInfo> result = new();
+        private readonly List<(string name, string path)> ori;
+        public List<(string name, string path)> result = new();
 
-        public Chooser(List<FileInfo> list)
+        public Chooser(List<(string name, string path)> list)
         {
             ori = list;
             InitializeComponent();
 
-            foreach (FileInfo? file in list)
+            foreach (var file in list)
             {
                 ListBoxItem? item = new ListBoxItem();
                 WrapPanel? panel = new WrapPanel();
@@ -28,10 +29,15 @@ namespace DesktopUtility.Widget
                 {
                     VerticalAlignment = VerticalAlignment.Center,
                     HorizontalAlignment = HorizontalAlignment.Center,
+                    LayoutTransform = new ScaleTransform()
+                    {
+                        ScaleX = 2,
+                        ScaleY = 2,
+                    }
                 };
                 Image? image = new Image()
                 {
-                    Source = Util.ImageUtil.ToImageSource(Util.ImageUtil.GetEXEIcon(file.FullName)),
+                    Source = Util.ImageUtil.ToImageSource(Util.ImageUtil.GetEXEIcon(file.path)),
                     VerticalAlignment = VerticalAlignment.Center,
                     HorizontalAlignment = HorizontalAlignment.Center,
                     Width = 48,
@@ -39,7 +45,7 @@ namespace DesktopUtility.Widget
                 };
                 TextBlock? textBlock = new TextBlock()
                 {
-                    Text = file.Name,
+                    Text = file.name,
                     VerticalAlignment = VerticalAlignment.Center,
                     HorizontalAlignment = HorizontalAlignment.Center
                 };
@@ -63,8 +69,8 @@ namespace DesktopUtility.Widget
                 if (state != null && (bool)state)
                 {
                     string? name = ((TextBlock)panel.Children[2]).Text;
-                    IEnumerable<FileInfo>? search = from i in ori
-                                                    where i.Name == name
+                    IEnumerable<(string name, string path)>? search = from i in ori
+                                                    where i.name == name
                                                     select i;
                     if (search != null)
                     {

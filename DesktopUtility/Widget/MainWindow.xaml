@@ -68,6 +68,9 @@
         <ContextMenu Name="MyMenu">
             <MenuItem x:Name="addAppItem" Header="添加应用" Click="MenuItem_Click"></MenuItem>
             <MenuItem x:Name="addPlanItem" Header="添加计划" Click="addPlanItem_Click"></MenuItem>
+            <MenuItem x:Name="addDayItem" Header="添加重要日" Click="addDayItem_Click"></MenuItem>
+            <MenuItem x:Name="addTaskItem" Header="添加每日需做" Click="addTaskItem_Click"></MenuItem>
+            <Separator></Separator>
             <MenuItem x:Name="showPlanItem" Header="显示所有计划列表" Click="showPlanItem_Click"></MenuItem>
             <MenuItem x:Name="editTimeItem" Header="修改时间" Click="editTimeItem_Click"></MenuItem>
         </ContextMenu>
@@ -77,7 +80,7 @@
     <Grid x:Name="MainGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"></ColumnDefinition>
-            <ColumnDefinition Width="1*"></ColumnDefinition>
+            <ColumnDefinition Width="1.5*"></ColumnDefinition>
             <ColumnDefinition Width="1*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
@@ -113,8 +116,8 @@
                 <Border Grid.RowSpan="2" CornerRadius="15" BorderThickness="2" BorderBrush="Black"></Border>
 
                 <TextBlock Margin="0, 5, 0, 0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center">重要日倒计时</TextBlock>
-                <ListBox Margin="5, 0, 5, 12" x:Name="DayList" Grid.Row="1" Background="{x:Null}">
-
+                <ListBox Margin="5, 0, 5, 12" x:Name="DayList" Grid.Row="1" Background="{x:Null}" BorderBrush="Black">
+                    <!--TODO-->
                 </ListBox>
             </Grid>
             <Grid Margin="5" Grid.Row="2" Grid.Column="1">
@@ -125,7 +128,8 @@
                 <Border Grid.RowSpan="2" CornerRadius="15" BorderThickness="2" BorderBrush="Black"></Border>
 
                 <TextBlock Margin="0, 5, 0, 0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center">每日需做</TextBlock>
-                <ListBox Margin="5, 0, 5, 12" x:Name="TaskList" Grid.Row="1" Background="{x:Null}">
+                <ListBox Margin="5, 0, 5, 12" x:Name="TaskList" Grid.Row="1" Background="{x:Null}" BorderBrush="Black">
+                    <!--TODO-->
                 </ListBox>
             </Grid>
 

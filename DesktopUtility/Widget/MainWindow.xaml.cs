@@ -87,12 +87,14 @@ namespace DesktopUtility
             Icon = Util.ImageUtil.ToImageSource(DesktopUtility.Resources.Resource1.icon);
             addAppItem.Icon = Util.ImageUtil.ToImage(DesktopUtility.Resources.Resource1.addIcon);
             addPlanItem.Icon = Util.ImageUtil.ToImage(DesktopUtility.Resources.Resource1.addIcon);
+            addDayItem.Icon = Util.ImageUtil.ToImage(DesktopUtility.Resources.Resource1.addIcon);
+            addTaskItem.Icon = Util.ImageUtil.ToImage(DesktopUtility.Resources.Resource1.addIcon);
             showPlanItem.Icon = Util.ImageUtil.ToImage(DesktopUtility.Resources.Resource1.showIcon);
             editTimeItem.Icon = Util.ImageUtil.ToImage(DesktopUtility.Resources.Resource1.renameIcon);
 
             Data.IconFactory.LoadFromFile();
             ReLayout();
-            
+
 
             taskbarIcon = new TaskbarIcon()
             {
@@ -242,7 +244,7 @@ namespace DesktopUtility
 
         private void editTimeItem_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = new EditTimeDialog(calendar.year, calendar.month);
+            EditTimeDialog? dialog = new EditTimeDialog(calendar.year, calendar.month);
             dialog.ShowDialog();
             if (dialog.ok)
             {
@@ -256,6 +258,16 @@ namespace DesktopUtility
                     AttachPlan();
                 }
             }
+        }
+
+        private void addDayItem_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void addTaskItem_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

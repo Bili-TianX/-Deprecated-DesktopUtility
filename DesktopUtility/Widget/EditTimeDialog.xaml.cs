@@ -13,22 +13,30 @@ namespace DesktopUtility.Widget
         {
             get
             {
-                var item = (ComboBoxItem)yearBox.SelectedItem;
+                ComboBoxItem? item = (ComboBoxItem)yearBox.SelectedItem;
                 if (item != null)
+                {
                     return int.Parse(item.Content.ToString());
+                }
                 else
+                {
                     return -1;
+                }
             }
         }
         public int Month
         {
             get
             {
-                var item = (ComboBoxItem)monthBox.SelectedItem;
+                ComboBoxItem? item = (ComboBoxItem)monthBox.SelectedItem;
                 if (item != null)
+                {
                     return int.Parse(item.Content.ToString());
+                }
                 else
+                {
                     return -1;
+                }
             }
         }
 
@@ -41,7 +49,7 @@ namespace DesktopUtility.Widget
                 yearBox.Items.Add(new ComboBoxItem()
                 {
                     Content = i.ToString(),
-                    VerticalAlignment= VerticalAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Center,
                     HorizontalAlignment = HorizontalAlignment.Center
                 });
             }
@@ -62,12 +70,13 @@ namespace DesktopUtility.Widget
 
         private void yesButton_Click(object sender, RoutedEventArgs e)
         {
-            var year = Year;
-            var month = Month;
+            int year = Year;
+            int month = Month;
             if (year == -1 || month == -1)
             {
                 MessageBox.Show("未选择月份/年份", "错误");
-            } else
+            }
+            else
             {
                 ok = true;
                 Close();

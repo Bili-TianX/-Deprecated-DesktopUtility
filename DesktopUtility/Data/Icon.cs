@@ -109,12 +109,12 @@ namespace DesktopUtility.Data
             return result;
         }
 
-        private static List<FileInfo> getAll()
+        private static List<(string name, string path)> getAll()
         {
             string? path = Environment.GetFolderPath(Environment.SpecialFolder.CommonPrograms);
             Stack<DirectoryInfo> dirs = new();
             List<FileInfo> files = new();
-            List<FileInfo> result = new();
+            List<(string name, string path)> result = new();
             WshShell shell = new WshShell();
 
             dirs.Push(new DirectoryInfo(path));
@@ -141,7 +141,7 @@ namespace DesktopUtility.Data
                         FileInfo? target = new FileInfo(((IWshShortcut)shell.CreateShortcut(file.FullName)).TargetPath);
                         if (target.Extension == ".exe")
                         {
-                            result.Add(target);
+                            result.Add((file.Name[..^4], target.FullName));
                         }
                     }
                     catch (Exception)
@@ -163,14 +163,14 @@ namespace DesktopUtility.Data
 
             if (!System.IO.File.Exists(TargetFolder + TargetFile))
             {
-                List<FileInfo>? list = getAll();
+                List<(string name, string path)>? list = getAll();
                 Chooser? dialog = new Chooser(list);
                 dialog.ShowDialog();
                 if (dialog.ok)
                 {
-                    foreach (FileInfo? item in dialog.result)
+                    foreach (var item in dialog.result)
                     {
-                        icons.Add(new AppIcon(new IconData(item.Name, item.FullName)));
+                        icons.Add(new AppIcon(new IconData(item.name, item.path)));
                     }
                 }
             }
