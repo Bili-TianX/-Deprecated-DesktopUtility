@@ -116,7 +116,7 @@
                 <Border Grid.RowSpan="2" CornerRadius="15" BorderThickness="2" BorderBrush="Black"></Border>
 
                 <TextBlock Margin="0, 5, 0, 0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center">重要日倒计时</TextBlock>
-                <ListBox Margin="5, 0, 5, 12" x:Name="DayList" Grid.Row="1" Background="{x:Null}" BorderBrush="Black">
+                <ListBox Margin="5, 0, 5, 12" x:Name="DayList" Grid.Row="1" Background="{x:Null}" BorderBrush="Black" MouseDoubleClick="DayList_MouseDoubleClick">
                     <!--TODO-->
                 </ListBox>
             </Grid>

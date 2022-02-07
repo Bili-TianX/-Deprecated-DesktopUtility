@@ -61,6 +61,22 @@ namespace DesktopUtility
             Left = Top = 0;
         }
 
+        public void AddDay(Data.DayData data)
+        {
+            var time = data.time;
+            var now = DateTime.Now;
+            if (time.Month <= now.Month && time.Day < now.Day)
+            {
+                now = new DateTime(now.Year - 1, now.Month, now.Day);
+            }
+
+            DayList.Items.Add(new ListBoxItem()
+            {
+                Style = boxItemStyle,
+                Content = $"{data.name}({data.time.ToString("M")})({(int)(time - now).TotalDays}天)"
+            });
+        }
+
         public unsafe MainWindow()
         {
             InitializeComponent();
@@ -94,7 +110,10 @@ namespace DesktopUtility
 
             Data.IconFactory.LoadFromFile();
             ReLayout();
-
+            foreach (var data in Data.DayFactory.list)
+            {
+                AddDay(data);
+            }
 
             taskbarIcon = new TaskbarIcon()
             {
@@ -262,12 +281,33 @@ namespace DesktopUtility
 
         private void addDayItem_Click(object sender, RoutedEventArgs e)
         {
-
+            var dialog = new DayDialog();
+            dialog.ShowDialog();
+            if (dialog.ok)
+            {
+                var tmp = dialog.Data;
+                Data.DayFactory.list.Add(tmp);
+                AddDay(tmp);
+            }
         }
 
         private void addTaskItem_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void DayList_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            var item = (ListBoxItem?)DayList.SelectedItem;
+            if (item != null)
+            {
+                if (System.Windows.MessageBox.Show($"删除重要日 {item?.Content} ?", "删除", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    DayList.Items.Remove(item);
+                    string name = (string)item?.Content;
+                    Data.DayFactory.list.RemoveAll((item) => name.Split('(')[0] == item.name);
+                }
+            }
         }
     }
 }

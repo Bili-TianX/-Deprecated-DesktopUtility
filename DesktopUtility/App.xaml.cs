@@ -18,12 +18,14 @@ namespace DesktopUtility
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             Data.PlanFactory.LoadFromFile();
+            Data.DayFactory.LoadFromFile();
         }
 
         private void Application_Exit(object sender, ExitEventArgs e)
         {
             Data.IconFactory.SaveToFile();
             Data.PlanFactory.SaveToFile();
+            Data.DayFactory.SaveToFile();
             GC.Collect();
         }
     }

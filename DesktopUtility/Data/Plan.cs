@@ -102,15 +102,15 @@ namespace DesktopUtility.Data
             {
                 Directory.CreateDirectory(TargetFolder);
             }
-
-            StreamWriter writer = new(TargetFolder + TargetFile);
-            JArray array = new();
-            foreach (PlanData plan in plans)
+            using (StreamWriter writer = new(TargetFolder + TargetFile))
             {
-                array.Add(JObject.FromObject(plan));
+                JArray array = new();
+                foreach (PlanData plan in plans)
+                {
+                    array.Add(JObject.FromObject(plan));
+                }
+                writer.Write(array);
             }
-            writer.Write(array);
-            writer.Close();
         }
     }
 }
