@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Interop;
+using System.Windows.Media;
 
 namespace DesktopUtility
 {
@@ -25,12 +26,12 @@ namespace DesktopUtility
             IntPtr desktop = Util.WinAPI.GetDesktopWindow();
             IntPtr hWorkerW = IntPtr.Zero;
             IntPtr hShellViewWin = IntPtr.Zero;
-            do
-            {
+            //do
+            //{
                 hWorkerW = Util.WinAPI.FindWindowEx(desktop, hWorkerW, "WorkerW", string.Empty);
                 hShellViewWin = Util.WinAPI.FindWindowEx(hWorkerW, IntPtr.Zero, "SHELLDLL_DefView", string.Empty);
-            } while (hShellViewWin == IntPtr.Zero && hWorkerW != IntPtr.Zero);
-            return hShellViewWin;
+            //} while (hShellViewWin == IntPtr.Zero && hWorkerW != IntPtr.Zero);
+            return hWorkerW;
         }
 
         ~MainWindow()
@@ -41,23 +42,32 @@ namespace DesktopUtility
 
         private void MainWindow_onLoaded(object sender, EventArgs e)
         {
-            if (onBottom)
-            {
-#pragma warning disable CS0162 // 检测到无法访问的代码
-                const int GWL_STYLE = (-16);
-#pragma warning restore CS0162 // 检测到无法访问的代码
-                const ulong WS_CHILD = 0x40000000;
-                IntPtr hWnd = new WindowInteropHelper(this).Handle;
-                ulong iWindowStyle = Util.WinAPI.GetWindowLong(hWnd, GWL_STYLE);
-#pragma warning disable CA1806 // 不要忽略方法结果
-                WinAPI.SetWindowLong(hWnd, GWL_STYLE, (iWindowStyle | WS_CHILD));
-#pragma warning restore CA1806 // 不要忽略方法结果
+            //            if (onBottom)
+            //            {
+            //#pragma warning disable CS0162 // 检测到无法访问的代码
+            //                const int GWL_STYLE = (-16);
+            //#pragma warning restore CS0162 // 检测到无法访问的代码
+            //                const ulong WS_CHILD = 0x40000000;
 
-                IntPtr desktopHandle = SearchDesktopHandle();
-                Util.WinAPI.SetParent(hWnd, desktopHandle);
-            }
+            //                ulong iWindowStyle = Util.WinAPI.GetWindowLong(hWnd, GWL_STYLE);
+            //#pragma warning disable CA1806 // 不要忽略方法结果
+            //                WinAPI.SetWindowLong(hWnd, GWL_STYLE, (iWindowStyle | WS_CHILD));
+            //#pragma warning restore CA1806 // 不要忽略方法结果
+
+            //                IntPtr desktopHandle = SearchDesktopHandle();
+            //                Util.WinAPI.SetParent(hWnd, desktopHandle);
+            //            }
+            //            Width = SystemInformation.WorkingArea.Size.Width;
+            //            Height = SystemInformation.WorkingArea.Size.Height;
+            //            Left = Top = 0;
+            IntPtr hWnd = new WindowInteropHelper(this).Handle;
+            Util.WinAPI.SetWindowPos(hWnd, new IntPtr(0x0001),
+                0, 0,
+                SystemInformation.WorkingArea.Size.Width, SystemInformation.WorkingArea.Size.Height,
+                0x0002);
             Width = SystemInformation.WorkingArea.Size.Width;
             Height = SystemInformation.WorkingArea.Size.Height;
+
             Left = Top = 0;
         }
 
@@ -114,6 +124,10 @@ namespace DesktopUtility
             {
                 AddDay(data);
             }
+            foreach (var data in Data.TaskFactory.list)
+            {
+                AddTask(data);
+            }
 
             taskbarIcon = new TaskbarIcon()
             {
@@ -132,7 +146,16 @@ namespace DesktopUtility
             {
                 System.Windows.Application.Current.Shutdown(0);
             };
-
+            MenuItem? item2 = new MenuItem()
+            {
+                Header = "显示/隐藏"
+            };
+            item2.Click += (o, e) =>
+            {
+                if (this.Visibility == Visibility.Visible) this.Hide();
+                else this.Show();
+            };
+            iconMenu.Items.Add(item2);
             iconMenu.Items.Add(item);
         }
 
@@ -291,9 +314,48 @@ namespace DesktopUtility
             }
         }
 
+        public void AddTask(Data.TaskData data)
+        {
+            WrapPanel panel = new();
+            System.Windows.Controls.CheckBox box = new()
+            {
+                VerticalAlignment = VerticalAlignment.Center,
+                HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
+                LayoutTransform = new ScaleTransform()
+                {
+                    ScaleX = 1.5,
+                    ScaleY = 1.5,
+                },
+                IsChecked = data.check
+            };
+            TextBlock block = new() { Text = data.content };
+            box.Click += (o, e) =>
+            {
+#pragma warning disable CS8602 // 解引用可能出现空引用。
+                Data.TaskFactory.list.Find((item) => item.content == block.Text).check = (bool)box.IsChecked;
+#pragma warning restore CS8602 // 解引用可能出现空引用。
+            };
+            
+            panel.Children.Add(box);
+            panel.Children.Add(block);
+
+            TaskList.Items.Add(new ListBoxItem()
+            {
+                Style = boxItemStyle,
+                Content = panel
+            });
+        }
+
         private void addTaskItem_Click(object sender, RoutedEventArgs e)
         {
-
+            var dialog = new Widget.TaskDialog();
+            dialog.ShowDialog();
+            if (dialog.ok)
+            {
+                var tmp = dialog.Data;
+                Data.TaskFactory.list.Add(tmp);
+                AddTask(tmp);
+            }
         }
 
         private void DayList_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -304,8 +366,26 @@ namespace DesktopUtility
                 if (System.Windows.MessageBox.Show($"删除重要日 {item?.Content} ?", "删除", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
                     DayList.Items.Remove(item);
+#pragma warning disable CS8600 // 将 null 字面量或可能为 null 的值转换为非 null 类型。
                     string name = (string)item?.Content;
-                    Data.DayFactory.list.RemoveAll((item) => name.Split('(')[0] == item.name);
+                    Data.DayFactory.list.RemoveAll((item) => name?.Split('(')[0] == item.name);
+#pragma warning restore CS8600 // 将 null 字面量或可能为 null 的值转换为非 null 类型。
+                }
+            }
+        }
+
+        private void TaskList_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            var item = (ListBoxItem?)TaskList.SelectedItem;
+            if (item != null)
+            {
+                var tmp = (WrapPanel)item.Content;
+                var content = ((TextBlock)tmp.Children[1]).Text;
+
+                if (System.Windows.MessageBox.Show($"删除每日需做 {content} ?", "删除", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    TaskList.Items.Remove(item);
+                    Data.TaskFactory.list.RemoveAll((item) => content == item.content);
                 }
             }
         }
