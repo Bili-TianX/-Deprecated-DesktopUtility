@@ -3,15 +3,17 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace DesktopUtility.Data
 {
     public class PlanData
     {
         public string title;
-        public string content;
         public DateTime begin;
         public DateTime end;
+        public string content;
+        public bool check = false;
 
         public bool contain(DateTime time)
         {
@@ -94,6 +96,14 @@ namespace DesktopUtility.Data
             }
 
             reader.Close();
+        }
+
+        public static List<PlanData> Unfinished()
+        {
+            var now = DateTime.Now;
+            return (from item in plans
+                    where item.begin <= now && now <= item.end
+                    select item).ToList();
         }
 
         public static void SaveToFile()

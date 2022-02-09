@@ -76,6 +76,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>I18N.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\MyRes.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>MyRes.resx</DependentUpon>
+    </Compile>
     <Compile Update="Resources\Resource1.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -87,6 +92,10 @@
     <EmbeddedResource Update="Resources\I18N.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>I18N.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\MyRes.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>MyRes.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Resource1.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

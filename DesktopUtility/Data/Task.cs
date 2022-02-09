@@ -77,6 +77,12 @@ namespace DesktopUtility.Data
             reader.Close();
         }
 
+        public static List<TaskData> Unfinished()
+        {
+            return (from item in list
+                   where item.check == false
+                   select item).ToList();
+        }
         public static void SaveToFile()
         {
             if (!Directory.Exists(TargetFolder))

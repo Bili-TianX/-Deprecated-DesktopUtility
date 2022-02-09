@@ -15,7 +15,8 @@ namespace DesktopUtility.Widget
             title = titleBox.Text,
             content = contentBox.Text,
             begin = DateTime.Parse(startTimeBox.Text),
-            end = DateTime.Parse(endTimeBox.Text)
+            end = DateTime.Parse(endTimeBox.Text),
+            check = false
         };
 
         public PlanDialog(bool ignoreTitle = false)

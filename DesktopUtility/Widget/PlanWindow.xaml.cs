@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace DesktopUtility.Widget
 {
@@ -73,22 +74,45 @@ namespace DesktopUtility.Widget
 
         public void ListAddPlan(Data.PlanData data)
         {
+            WrapPanel panel = new();
+            CheckBox box = new()
+            {
+                VerticalAlignment = VerticalAlignment.Center,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                LayoutTransform = new ScaleTransform()
+                {
+                    ScaleX = 2,
+                    ScaleY = 2,
+                },
+                IsChecked = data.check
+            };
+            box.Click += (o, e) =>
+            {
+                data.check = (bool)box.IsChecked;
+            };
+            TextBlock block = new() { Text = data.title };
+            panel.Children.Add(box);
+            panel.Children.Add(block);
+
             list.Items.Add(new ListBoxItem()
             {
                 Style = itemStyle,
-                Content = data.title
+                Content = panel
             });
+        }
+
+        private string GetTitle(ListBoxItem item)
+        {
+            return ((TextBlock)((WrapPanel)item.Content).Children[1]).Text;
         }
 
         private void list_Selected(object sender, RoutedEventArgs e)
         {
             ListBoxItem? item = (ListBoxItem?)list.SelectedItem;
             if (item == null)
-            {
                 return;
-            }
 
-            Data.PlanData? plan = Data.PlanFactory.GetByTitle(item.Content.ToString());
+            Data.PlanData? plan = Data.PlanFactory.GetByTitle(GetTitle(item));
             if (plan == null)
             {
                 return;
@@ -106,10 +130,10 @@ namespace DesktopUtility.Widget
             if (item != null)
             {
                 PlanDialog? dialog = new PlanDialog(true);
-                dialog.titleBox.Text = ((ListBoxItem)item).Content.ToString();
+                dialog.titleBox.Text = GetTitle((ListBoxItem)item);
                 dialog.title.Text = "修改计划";
                 dialog.ShowDialog();
-                Data.PlanData? Item = Data.PlanFactory.GetByTitle(((ListBoxItem)item).Content.ToString());
+                Data.PlanData? Item = Data.PlanFactory.GetByTitle(GetTitle((ListBoxItem)item));
                 if (dialog.ok)
                 {
                     Data.PlanData? data = dialog.Data;
@@ -120,6 +144,7 @@ namespace DesktopUtility.Widget
                     Item.begin = data.begin;
                     Item.end = data.end;
                     Item.content = data.content;
+                    Item.check = false;
 
                     UpdatePlans();
                     ((MainWindow)App.Current.MainWindow).AttachPlan();
@@ -138,9 +163,9 @@ namespace DesktopUtility.Widget
             if (item != null)
             {
                 ListBoxItem? Item = (ListBoxItem)item;
-                if (MessageBox.Show($"删除计划 \"{Item.Content}\" ?", "删除计划", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                if (MessageBox.Show($"删除计划 \"{GetTitle(Item)}\" ?", "删除计划", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
-                    Data.PlanFactory.RemoveByTitle(Item.Content.ToString());
+                    Data.PlanFactory.RemoveByTitle(GetTitle(Item));
                     UpdatePlans();
                     ((MainWindow)App.Current.MainWindow).calendar.AttachPlan();
                     startBlock.Text = endBlock.Text = contentBlock.Text = "<空>";
@@ -155,7 +180,7 @@ namespace DesktopUtility.Widget
         private void addItem_Click(object sender, RoutedEventArgs e)
         {
             PlanDialog? dialog = new PlanDialog();
-            dialog.startTimeBox.Text = time.ToString();
+            dialog.startTimeBox.Text = DateTime.Now.ToString();
             dialog.ShowDialog();
             if (dialog.ok)
             {

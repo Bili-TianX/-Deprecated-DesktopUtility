@@ -7,6 +7,9 @@ using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Interop;
 using System.Windows.Media;
+using System.Resources;
+using System.Reflection;
+using System.Drawing;
 
 namespace DesktopUtility
 {
@@ -40,6 +43,16 @@ namespace DesktopUtility
             taskbarIcon.Dispose();
         }
 
+        public void OnLove(object sender, EventArgs e)
+        {
+            // TODO
+        }
+
+        public void OnSetting(object sender, EventArgs e)
+        {
+
+        }
+
         private void MainWindow_onLoaded(object sender, EventArgs e)
         {
             //            if (onBottom)
@@ -69,6 +82,22 @@ namespace DesktopUtility
             Height = SystemInformation.WorkingArea.Size.Height;
 
             Left = Top = 0;
+
+            var a = new MenuItem()
+            {
+                Icon = Util.ImageUtil.ToImage(DesktopUtility.Resources.MyRes.heart),
+                Header = "Love"
+            };
+            MyMenu.Items.Add(a);
+            a.Click += OnLove;
+
+            var b = new MenuItem()
+            {
+                Icon = Util.ImageUtil.ToImage(DesktopUtility.Resources.MyRes.set),
+                Header = "设置"
+            };
+            MyMenu.Items.Add(b);
+            b.Click += OnSetting;
         }
 
         public void AddDay(Data.DayData data)
@@ -90,6 +119,8 @@ namespace DesktopUtility
         public unsafe MainWindow()
         {
             InitializeComponent();
+            
+
             iconMenu = new ContextMenu();
             Background = new System.Windows.Media.ImageBrush(Util.ImageUtil.ToImageSource(DesktopUtility.Resources.Resource1.bg2));
             System.Collections.ICollection? values = App.Current.MainWindow.Resources.Values;
@@ -118,6 +149,10 @@ namespace DesktopUtility
             showPlanItem.Icon = Util.ImageUtil.ToImage(DesktopUtility.Resources.Resource1.showIcon);
             editTimeItem.Icon = Util.ImageUtil.ToImage(DesktopUtility.Resources.Resource1.renameIcon);
             copyrightItem.Icon = Util.ImageUtil.ToImage(DesktopUtility.Resources.Resource1.copyright);
+            //loveItem.Icon = Util.ImageUtil.ToImage(DesktopUtility.Resources.Resource1.heart);
+            //settingMenuItem.Icon = Util.ImageUtil.ToImage(DesktopUtility.Resources.Resource1.setting);
+            
+            
 
             Data.IconFactory.LoadFromFile();
             ReLayout();
@@ -400,6 +435,10 @@ namespace DesktopUtility
         private void copyrightItem_Click(object sender, RoutedEventArgs e)
         {
             new Copyright().ShowDialog();
+        }
+
+        private void TestItem_OnClick(object sender, RoutedEventArgs e) {
+            throw new NotImplementedException();
         }
     }
 }

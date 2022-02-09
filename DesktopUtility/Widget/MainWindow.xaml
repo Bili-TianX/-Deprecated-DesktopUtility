@@ -62,8 +62,6 @@
         <ImageBrush/>
     </Window.Background>
 
-    
-    
     <Window.ContextMenu>
         <ContextMenu Name="MyMenu">
             <MenuItem x:Name="addAppItem" Header="添加应用" Click="MenuItem_Click"></MenuItem>
@@ -75,10 +73,10 @@
             <MenuItem x:Name="editTimeItem" Header="修改时间" Click="editTimeItem_Click"></MenuItem>
             <Separator></Separator>
             <MenuItem x:Name="copyrightItem" Header="关于" Click="copyrightItem_Click"></MenuItem>
+            
         </ContextMenu>
     </Window.ContextMenu>
     
-
     <Grid x:Name="MainGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"></ColumnDefinition>
