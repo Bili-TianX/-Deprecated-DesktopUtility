@@ -11,21 +11,17 @@ using System.Resources;
 using System.Reflection;
 using System.Drawing;
 
-namespace DesktopUtility
-{
+namespace DesktopUtility {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public unsafe partial class MainWindow : Window
-    {
-        public const int COLUMN_COUNT = 4;
+    public unsafe partial class MainWindow : Window {
         public const bool onBottom = true;
         public static Style? boxItemStyle;
         public TaskbarIcon taskbarIcon;
         public ContextMenu iconMenu;
 
-        private static IntPtr SearchDesktopHandle()
-        {
+        private static IntPtr SearchDesktopHandle() {
             IntPtr desktop = Util.WinAPI.GetDesktopWindow();
             IntPtr hWorkerW = IntPtr.Zero;
             IntPtr hShellViewWin = IntPtr.Zero;
@@ -37,24 +33,19 @@ namespace DesktopUtility
             return hWorkerW;
         }
 
-        ~MainWindow()
-        {
+        ~MainWindow() {
             taskbarIcon.Visibility = Visibility.Hidden;
             taskbarIcon.Dispose();
         }
 
-        public void OnLove(object sender, EventArgs e)
-        {
+        public void OnLove(object sender, EventArgs e) {
             // TODO
         }
 
-        public void OnSetting(object sender, EventArgs e)
-        {
-
+        public void OnSetting(object sender, EventArgs e) {
         }
 
-        private void MainWindow_onLoaded(object sender, EventArgs e)
-        {
+        private void MainWindow_onLoaded(object sender, EventArgs e) {
             //            if (onBottom)
             //            {
             //#pragma warning disable CS0162 // 检测到无法访问的代码
@@ -83,16 +74,14 @@ namespace DesktopUtility
 
             Left = Top = 0;
 
-            var a = new MenuItem()
-            {
+            var a = new MenuItem() {
                 Icon = Util.ImageUtil.ToImage(DesktopUtility.Resources.MyRes.heart),
                 Header = "Love"
             };
             MyMenu.Items.Add(a);
             a.Click += OnLove;
 
-            var b = new MenuItem()
-            {
+            var b = new MenuItem() {
                 Icon = Util.ImageUtil.ToImage(DesktopUtility.Resources.MyRes.set),
                 Header = "设置"
             };
@@ -100,47 +89,52 @@ namespace DesktopUtility
             b.Click += OnSetting;
         }
 
-        public void AddDay(Data.DayData data)
-        {
+        public void AddDay(Data.DayData data) {
             DateTime time = data.time;
             DateTime now = DateTime.Now;
-            if (time.Month <= now.Month && time.Day < now.Day)
-            {
+            if (time.Month <= now.Month && time.Day < now.Day) {
                 now = new DateTime(now.Year - 1, now.Month, now.Day);
             }
 
-            DayList.Items.Add(new ListBoxItem()
-            {
+            DayList.Items.Add(new ListBoxItem() {
                 Style = boxItemStyle,
-                Content = $"{data.name}({data.time.ToString("M")})({(int)(time - now).TotalDays}天)"
+                Content = $"{data.name}({data.time.ToString("M")})({(int) (time - now).TotalDays}天)"
             });
         }
 
-        public unsafe MainWindow()
-        {
+        public unsafe MainWindow() {
             InitializeComponent();
-            
+
 
             iconMenu = new ContextMenu();
-            Background = new System.Windows.Media.ImageBrush(Util.ImageUtil.ToImageSource(DesktopUtility.Resources.Resource1.bg2));
+            //TODO
+
+            if (string.IsNullOrWhiteSpace(Data.Setting.Background_Image)) {
+                Background =
+                    new System.Windows.Media.ImageBrush(
+                        Util.ImageUtil.ToImageSource(DesktopUtility.Resources.Resource1.bg2));
+            }
+            else {
+                Background = new ImageBrush() {
+                    ImageSource = (ImageSource) new ImageSourceConverter().ConvertFrom(Data.Setting.Background_Image)
+                };
+            }
+
             System.Collections.ICollection? values = App.Current.MainWindow.Resources.Values;
 
-            foreach (object? value in values)
-            {
-                if (value.GetType() == typeof(Style) && ((Style)value).TargetType.Name == nameof(ListBoxItem))
-                {
-                    boxItemStyle = (Style)value;
+            foreach (object? value in values) {
+                if (value.GetType() == typeof(Style) && ((Style) value).TargetType.Name == nameof(ListBoxItem)) {
+                    boxItemStyle = (Style) value;
                     break;
                 }
             }
 
-            for (int i = 0; i < COLUMN_COUNT; i++)
-            {
-                LaunchPad.ColumnDefinitions.Add(new ColumnDefinition()
-                {
+            for (int i = 0; i < Data.Setting.Column_Count; i++) {
+                LaunchPad.ColumnDefinitions.Add(new ColumnDefinition() {
                     Width = new GridLength(1, GridUnitType.Star)
                 });
             }
+
             Icon = Util.ImageUtil.ToImageSource(DesktopUtility.Resources.Resource1.icon);
             addAppItem.Icon = Util.ImageUtil.ToImage(DesktopUtility.Resources.Resource1.addIcon);
             addPlanItem.Icon = Util.ImageUtil.ToImage(DesktopUtility.Resources.Resource1.addIcon);
@@ -151,22 +145,19 @@ namespace DesktopUtility
             copyrightItem.Icon = Util.ImageUtil.ToImage(DesktopUtility.Resources.Resource1.copyright);
             //loveItem.Icon = Util.ImageUtil.ToImage(DesktopUtility.Resources.Resource1.heart);
             //settingMenuItem.Icon = Util.ImageUtil.ToImage(DesktopUtility.Resources.Resource1.setting);
-            
-            
+
 
             Data.IconFactory.LoadFromFile();
             ReLayout();
-            foreach (Data.DayData? data in Data.DayFactory.list)
-            {
+            foreach (Data.DayData? data in Data.DayFactory.list) {
                 AddDay(data);
             }
-            foreach (Data.TaskData? data in Data.TaskFactory.list)
-            {
+
+            foreach (Data.TaskData? data in Data.TaskFactory.list) {
                 AddTask(data);
             }
 
-            taskbarIcon = new TaskbarIcon()
-            {
+            taskbarIcon = new TaskbarIcon() {
                 Visibility = Visibility.Visible,
                 Icon = DesktopUtility.Resources.Resource1.exeIcon,
                 ToolTipText = "DesktopUtility",
@@ -174,26 +165,18 @@ namespace DesktopUtility
                 MenuActivation = PopupActivationMode.RightClick
             };
 
-            MenuItem? item = new MenuItem()
-            {
+            MenuItem? item = new MenuItem() {
                 Header = "退出"
             };
-            item.Click += (o, e) =>
-            {
-                System.Windows.Application.Current.Shutdown(0);
-            };
-            MenuItem? item2 = new MenuItem()
-            {
+            item.Click += (o, e) => { System.Windows.Application.Current.Shutdown(0); };
+            MenuItem? item2 = new MenuItem() {
                 Header = "显示/隐藏"
             };
-            item2.Click += (o, e) =>
-            {
-                if (Visibility == Visibility.Visible)
-                {
+            item2.Click += (o, e) => {
+                if (Visibility == Visibility.Visible) {
                     Hide();
                 }
-                else
-                {
+                else {
                     Show();
                 }
             };
@@ -201,66 +184,53 @@ namespace DesktopUtility
             iconMenu.Items.Add(item);
         }
 
-        public void AttachPlan()
-        {
-            foreach (DateLabel? item in calendar.list)
-            {
+        public void AttachPlan() {
+            foreach (DateLabel? item in calendar.list) {
                 item.RemovePlan();
             }
 
-            foreach (Data.PlanData plan in Data.PlanFactory.plans)
-            {
+            foreach (Data.PlanData plan in Data.PlanFactory.plans) {
                 AttachPlan(plan);
             }
         }
 
-        public void AttachPlan(Data.PlanData plan)
-        {
+        public void AttachPlan(Data.PlanData plan) {
             DateTime begin = new DateTime(plan.begin.Year, plan.begin.Month, plan.begin.Day);
             DateTime end = new DateTime(plan.end.Year, plan.end.Month, plan.end.Day);
-            foreach (DateLabel? item in calendar.list)
-            {
-                if (item != null)
-                {
-                    if (begin <= item.Time && item.Time <= end)
-                    {
+            foreach (DateLabel? item in calendar.list) {
+                if (item != null) {
+                    if (begin <= item.Time && item.Time <= end) {
                         item.AttachPlan();
                     }
                 }
             }
         }
 
-        public void ReLayout()
-        {
+        public void ReLayout() {
             LaunchPad.Children.Clear();
             LaunchPad.RowDefinitions.Clear();
 
-            for (int i = 0; i < Data.IconFactory.icons.Count; ++i)
-            {
+            for (int i = 0; i < Data.IconFactory.icons.Count; ++i) {
                 AddIcon(Data.IconFactory.icons[i], i);
             }
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            Microsoft.Win32.OpenFileDialog ofd = new()
-            {
+        private void MenuItem_Click(object sender, RoutedEventArgs e) {
+            Microsoft.Win32.OpenFileDialog ofd = new() {
                 InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.CommonPrograms),
                 Filter = "(*.exe)|*.exe",
                 Multiselect = false
             };
             bool? r = ofd.ShowDialog(this);
-            if (Data.IconFactory.ExistByPath(ofd.FileName))
-            {
+            if (Data.IconFactory.ExistByPath(ofd.FileName)) {
                 System.Windows.MessageBox.Show("应用已存在: " + ofd.FileName, "错误");
                 return;
             }
-            if (r != null && (bool)r)
-            {
+
+            if (r != null && (bool) r) {
                 IconNameDialog? dialog = new IconNameDialog(ofd.SafeFileName[..^4].Capitalize());
                 dialog.ShowDialog();
-                if (!dialog.ok)
-                {
+                if (!dialog.ok) {
                     return;
                 }
 
@@ -270,73 +240,60 @@ namespace DesktopUtility
             }
         }
 
-        private void AddIcon(Data.IconData data)
-        {
+        private void AddIcon(Data.IconData data) {
             AppIcon? icon = new(data);
             Data.IconFactory.icons.Add(icon);
             AddIcon(icon);
         }
 
-        private void AddIcon(AppIcon icon, int index = -1)
-        {
-            if (index == -1)
-            {
+        private void AddIcon(AppIcon icon, int index = -1) {
+            if (index == -1) {
                 index = Data.IconFactory.icons.Count - 1;
             }
 
             LaunchPad.Children.Add(icon);
 
-            if (LaunchPad.RowDefinitions.Count <= index / COLUMN_COUNT)
-            {
+            if (LaunchPad.RowDefinitions.Count <= index / Data.Setting.Column_Count) {
                 LaunchPad.RowDefinitions.Add(new RowDefinition());
             }
 
-            Grid.SetColumn(icon, index % COLUMN_COUNT);
-            Grid.SetRow(icon, index / COLUMN_COUNT);
+            Grid.SetColumn(icon, index % Data.Setting.Column_Count);
+            Grid.SetRow(icon, index / Data.Setting.Column_Count);
 
             icon.SetImage();
         }
 
-        private void addPlanItem_Click(object sender, RoutedEventArgs e)
-        {
+        private void addPlanItem_Click(object sender, RoutedEventArgs e) {
             PlanDialog? dialog = new PlanDialog();
             dialog.ShowDialog();
-            if (dialog.ok)
-            {
+            if (dialog.ok) {
                 Data.PlanData plan = dialog.Data;
                 Data.PlanFactory.plans.Add(plan);
                 AttachPlan(plan);
             }
         }
 
-        public void ShowPlan(DateTime? time = null)
-        {
-            if (time != null)
-            {
-                new PlanWindow((DateTime)time).ShowDialog();
+        public void ShowPlan(DateTime? time = null) {
+            if (time != null) {
+                new PlanWindow((DateTime) time).ShowDialog();
             }
-            else
-            {
+            else {
                 new PlanWindow().ShowDialog();
             }
         }
 
-        private void showPlanItem_Click(object sender, RoutedEventArgs e)
-        {
+        private void showPlanItem_Click(object sender, RoutedEventArgs e) {
             ShowPlan();
         }
 
-        private void editTimeItem_Click(object sender, RoutedEventArgs e)
-        {
+        private void editTimeItem_Click(object sender, RoutedEventArgs e) {
             EditTimeDialog? dialog = new EditTimeDialog(calendar.year, calendar.month);
             dialog.ShowDialog();
-            if (dialog.ok)
-            {
+            if (dialog.ok) {
                 int year = dialog.Year;
                 int month = dialog.Month;
 
-                if (year != calendar.year || month != calendar.month)
-                {
+                if (year != calendar.year || month != calendar.month) {
                     //TODO: change
                     calendar.SetTime(year, month);
                     AttachPlan();
@@ -344,96 +301,82 @@ namespace DesktopUtility
             }
         }
 
-        private void addDayItem_Click(object sender, RoutedEventArgs e)
-        {
+        private void addDayItem_Click(object sender, RoutedEventArgs e) {
             DayDialog? dialog = new DayDialog();
             dialog.ShowDialog();
-            if (dialog.ok)
-            {
+            if (dialog.ok) {
                 Data.DayData? tmp = dialog.Data;
                 Data.DayFactory.list.Add(tmp);
                 AddDay(tmp);
             }
         }
 
-        public void AddTask(Data.TaskData data)
-        {
+        public void AddTask(Data.TaskData data) {
             WrapPanel panel = new();
-            System.Windows.Controls.CheckBox box = new()
-            {
+            System.Windows.Controls.CheckBox box = new() {
                 VerticalAlignment = VerticalAlignment.Center,
                 HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
-                LayoutTransform = new ScaleTransform()
-                {
+                LayoutTransform = new ScaleTransform() {
                     ScaleX = 1.5,
                     ScaleY = 1.5,
                 },
                 IsChecked = data.check
             };
-            TextBlock block = new() { Text = data.content };
-            box.Click += (o, e) =>
-            {
+            TextBlock block = new() {Text = data.content};
+            box.Click += (o, e) => {
 #pragma warning disable CS8602 // 解引用可能出现空引用。
-                Data.TaskFactory.list.Find((item) => item.content == block.Text).check = (bool)box.IsChecked;
+                Data.TaskFactory.list.Find((item) => item.content == block.Text).check = (bool) box.IsChecked;
 #pragma warning restore CS8602 // 解引用可能出现空引用。
             };
 
             panel.Children.Add(box);
             panel.Children.Add(block);
 
-            TaskList.Items.Add(new ListBoxItem()
-            {
+            TaskList.Items.Add(new ListBoxItem() {
                 Style = boxItemStyle,
                 Content = panel
             });
         }
 
-        private void addTaskItem_Click(object sender, RoutedEventArgs e)
-        {
+        private void addTaskItem_Click(object sender, RoutedEventArgs e) {
             Widget.TaskDialog? dialog = new Widget.TaskDialog();
             dialog.ShowDialog();
-            if (dialog.ok)
-            {
+            if (dialog.ok) {
                 Data.TaskData? tmp = dialog.Data;
                 Data.TaskFactory.list.Add(tmp);
                 AddTask(tmp);
             }
         }
 
-        private void DayList_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            ListBoxItem? item = (ListBoxItem?)DayList.SelectedItem;
-            if (item != null)
-            {
-                if (System.Windows.MessageBox.Show($"删除重要日 {item?.Content} ?", "删除", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-                {
+        private void DayList_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e) {
+            ListBoxItem? item = (ListBoxItem?) DayList.SelectedItem;
+            if (item != null) {
+                if (System.Windows.MessageBox.Show($"删除重要日 {item?.Content} ?", "删除", MessageBoxButton.YesNo) ==
+                    MessageBoxResult.Yes) {
                     DayList.Items.Remove(item);
 #pragma warning disable CS8600 // 将 null 字面量或可能为 null 的值转换为非 null 类型。
-                    string name = (string)item?.Content;
+                    string name = (string) item?.Content;
                     Data.DayFactory.list.RemoveAll((item) => name?.Split('(')[0] == item.name);
 #pragma warning restore CS8600 // 将 null 字面量或可能为 null 的值转换为非 null 类型。
                 }
             }
         }
 
-        private void TaskList_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            ListBoxItem? item = (ListBoxItem?)TaskList.SelectedItem;
-            if (item != null)
-            {
-                WrapPanel? tmp = (WrapPanel)item.Content;
-                string? content = ((TextBlock)tmp.Children[1]).Text;
+        private void TaskList_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e) {
+            ListBoxItem? item = (ListBoxItem?) TaskList.SelectedItem;
+            if (item != null) {
+                WrapPanel? tmp = (WrapPanel) item.Content;
+                string? content = ((TextBlock) tmp.Children[1]).Text;
 
-                if (System.Windows.MessageBox.Show($"删除每日需做 {content} ?", "删除", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-                {
+                if (System.Windows.MessageBox.Show($"删除每日需做 {content} ?", "删除", MessageBoxButton.YesNo) ==
+                    MessageBoxResult.Yes) {
                     TaskList.Items.Remove(item);
                     Data.TaskFactory.list.RemoveAll((item) => content == item.content);
                 }
             }
         }
 
-        private void copyrightItem_Click(object sender, RoutedEventArgs e)
-        {
+        private void copyrightItem_Click(object sender, RoutedEventArgs e) {
             new Copyright().ShowDialog();
         }
 

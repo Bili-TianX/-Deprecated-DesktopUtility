@@ -146,6 +146,8 @@ namespace DesktopUtility
             Data.PlanFactory.LoadFromFile();
             Data.DayFactory.LoadFromFile();
             Data.TaskFactory.LoadFromFile();
+            Data.Setting.LoadSetting();
+
             thread = new(f);
             thread.IsBackground = true;
             thread.Start();
@@ -153,6 +155,7 @@ namespace DesktopUtility
 
         private void Application_Exit(object sender, ExitEventArgs e)
         {
+            Data.Setting.SaveSetting();
             Data.IconFactory.SaveToFile();
             Data.PlanFactory.SaveToFile();
             Data.DayFactory.SaveToFile();
