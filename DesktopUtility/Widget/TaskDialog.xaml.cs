@@ -1,16 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿using System.Windows;
 
 namespace DesktopUtility.Widget
 {
@@ -19,10 +7,7 @@ namespace DesktopUtility.Widget
     /// </summary>
     public partial class TaskDialog : Window
     {
-        public Data.TaskData Data
-        {
-            get => new(contentInput.Text, false);
-        }
+        public Data.TaskData Data => new(contentInput.Text, false);
         public bool ok = false;
         public TaskDialog()
         {
@@ -34,10 +19,12 @@ namespace DesktopUtility.Widget
             if (string.IsNullOrEmpty(contentInput.Text))
             {
                 MessageBox.Show("缺少内容！", "错误");
-            } else if (DesktopUtility.Data.TaskFactory.ExistByContent(contentInput.Text))
+            }
+            else if (DesktopUtility.Data.TaskFactory.ExistByContent(contentInput.Text))
             {
                 MessageBox.Show("任务已存在！", "错误");
-            } else
+            }
+            else
             {
                 ok = true;
                 Close();

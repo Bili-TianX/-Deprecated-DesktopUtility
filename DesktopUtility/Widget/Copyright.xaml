@@ -1,0 +1,44 @@
+﻿<Window x:Class="DesktopUtility.Widget.Copyright"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DesktopUtility.Widget"
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen"
+        Title="关于" Height="600" Width="800" FontSize="24">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="48"></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.32*"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="28">关于</TextBlock>
+        <TextBlock Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center">许可与版权声明</TextBlock>
+        <TextBlock Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center">
+            <Bold>.NET</Bold><LineBreak/>
+            The MIT License (MIT)<LineBreak/>
+            Copyright (c) .NET Foundation and Contributors
+        </TextBlock>
+        <TextBlock Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center">
+            <Bold>Newtonsoft.Json</Bold><LineBreak/>
+            The MIT License (MIT)<LineBreak/>
+            Copyright (c) 2007 James Newton-King
+        </TextBlock>
+
+        <TextBlock Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">软件许可证</TextBlock>
+        <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center">
+            <Bold>DesktopUtility</Bold><LineBreak/>
+            The MIT License (MIT)<LineBreak/>
+            Copyright (c) 2022 Bili-TianX<LineBreak/>
+            <Hyperlink NavigateUri="https://github.com/Bili-TianX/DesktopUtility" Click="Hyperlink_Click">源代码</Hyperlink>
+        </TextBlock>
+        
+    </Grid>
+</Window>

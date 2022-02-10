@@ -168,7 +168,7 @@ namespace DesktopUtility.Data
                 dialog.ShowDialog();
                 if (dialog.ok)
                 {
-                    foreach (var item in dialog.result)
+                    foreach ((string name, string path) item in dialog.result)
                     {
                         icons.Add(new AppIcon(new IconData(item.name, item.path)));
                     }
@@ -179,7 +179,7 @@ namespace DesktopUtility.Data
                 StreamReader reader = new(TargetFolder + TargetFile);
                 JArray? array = JArray.Parse(reader.ReadToEnd());
                 foreach (JToken? item in array)
-                { 
+                {
                     IconData? obj = (IconData?)JsonConvert.DeserializeObject(item.ToString(), typeof(IconData));
                     if (obj != null)
                     {

@@ -54,17 +54,22 @@ namespace DesktopUtility.Data
                 if (first)
                 {
                     first = false;
-                    var last = DateTime.Parse((string?)item);
-                    var now = DateTime.Now;
+                    DateTime last = DateTime.Parse((string?)item);
+                    DateTime now = DateTime.Now;
                     if (new DateTime(now.Year, now.Month, now.Day) > new DateTime(last.Year, last.Month, last.Day))
                     {
                         flag = true;
                     }
-                } else
+                }
+                else
                 {
                     object? obj = JsonConvert.DeserializeObject(item.ToString(), typeof(TaskData));
-                    var tmp = (TaskData)obj;
-                    if (flag) tmp.check = false;
+                    TaskData? tmp = (TaskData)obj;
+                    if (flag)
+                    {
+                        tmp.check = false;
+                    }
+
                     list.Add(tmp);
                 }
             }
@@ -82,11 +87,11 @@ namespace DesktopUtility.Data
             {
                 JArray array = new();
                 array.Add(DateTime.Now.ToString());
-                foreach (var item in list)
+                foreach (TaskData? item in list)
                 {
                     array.Add(JObject.FromObject(item));
                 }
-                
+
                 writer.Write(array);
             }
         }

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,7 +20,7 @@ namespace DesktopUtility.Widget
             ori = list;
             InitializeComponent();
 
-            foreach (var file in list)
+            foreach ((string name, string path) file in list)
             {
                 ListBoxItem? item = new ListBoxItem();
                 WrapPanel? panel = new WrapPanel();
@@ -70,8 +69,8 @@ namespace DesktopUtility.Widget
                 {
                     string? name = ((TextBlock)panel.Children[2]).Text;
                     IEnumerable<(string name, string path)>? search = from i in ori
-                                                    where i.name == name
-                                                    select i;
+                                                                      where i.name == name
+                                                                      select i;
                     if (search != null)
                     {
                         result.Add(search.ToList()[0]);

@@ -10,9 +10,9 @@ namespace DesktopUtility.Data
     public class DayData
     {
         public DateTime time;
-        public String name;
+        public string name;
 
-        public DayData(String name, DateTime time)
+        public DayData(string name, DateTime time)
         {
             this.name = name;
             this.time = time;
@@ -70,7 +70,7 @@ namespace DesktopUtility.Data
             using (StreamWriter writer = new(TargetFolder + TargetFile))
             {
                 JArray array = new();
-                foreach (var item in list)
+                foreach (DayData? item in list)
                 {
                     array.Add(JObject.FromObject(item));
                 }

@@ -28,8 +28,8 @@ namespace DesktopUtility
             IntPtr hShellViewWin = IntPtr.Zero;
             //do
             //{
-                hWorkerW = Util.WinAPI.FindWindowEx(desktop, hWorkerW, "WorkerW", string.Empty);
-                hShellViewWin = Util.WinAPI.FindWindowEx(hWorkerW, IntPtr.Zero, "SHELLDLL_DefView", string.Empty);
+            hWorkerW = Util.WinAPI.FindWindowEx(desktop, hWorkerW, "WorkerW", string.Empty);
+            hShellViewWin = Util.WinAPI.FindWindowEx(hWorkerW, IntPtr.Zero, "SHELLDLL_DefView", string.Empty);
             //} while (hShellViewWin == IntPtr.Zero && hWorkerW != IntPtr.Zero);
             return hWorkerW;
         }
@@ -73,8 +73,8 @@ namespace DesktopUtility
 
         public void AddDay(Data.DayData data)
         {
-            var time = data.time;
-            var now = DateTime.Now;
+            DateTime time = data.time;
+            DateTime now = DateTime.Now;
             if (time.Month <= now.Month && time.Day < now.Day)
             {
                 now = new DateTime(now.Year - 1, now.Month, now.Day);
@@ -117,14 +117,15 @@ namespace DesktopUtility
             addTaskItem.Icon = Util.ImageUtil.ToImage(DesktopUtility.Resources.Resource1.addIcon);
             showPlanItem.Icon = Util.ImageUtil.ToImage(DesktopUtility.Resources.Resource1.showIcon);
             editTimeItem.Icon = Util.ImageUtil.ToImage(DesktopUtility.Resources.Resource1.renameIcon);
+            copyrightItem.Icon = Util.ImageUtil.ToImage(DesktopUtility.Resources.Resource1.copyright);
 
             Data.IconFactory.LoadFromFile();
             ReLayout();
-            foreach (var data in Data.DayFactory.list)
+            foreach (Data.DayData? data in Data.DayFactory.list)
             {
                 AddDay(data);
             }
-            foreach (var data in Data.TaskFactory.list)
+            foreach (Data.TaskData? data in Data.TaskFactory.list)
             {
                 AddTask(data);
             }
@@ -152,8 +153,14 @@ namespace DesktopUtility
             };
             item2.Click += (o, e) =>
             {
-                if (this.Visibility == Visibility.Visible) this.Hide();
-                else this.Show();
+                if (Visibility == Visibility.Visible)
+                {
+                    Hide();
+                }
+                else
+                {
+                    Show();
+                }
             };
             iconMenu.Items.Add(item2);
             iconMenu.Items.Add(item);
@@ -304,11 +311,11 @@ namespace DesktopUtility
 
         private void addDayItem_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = new DayDialog();
+            DayDialog? dialog = new DayDialog();
             dialog.ShowDialog();
             if (dialog.ok)
             {
-                var tmp = dialog.Data;
+                Data.DayData? tmp = dialog.Data;
                 Data.DayFactory.list.Add(tmp);
                 AddDay(tmp);
             }
@@ -335,7 +342,7 @@ namespace DesktopUtility
                 Data.TaskFactory.list.Find((item) => item.content == block.Text).check = (bool)box.IsChecked;
 #pragma warning restore CS8602 // 解引用可能出现空引用。
             };
-            
+
             panel.Children.Add(box);
             panel.Children.Add(block);
 
@@ -348,11 +355,11 @@ namespace DesktopUtility
 
         private void addTaskItem_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = new Widget.TaskDialog();
+            Widget.TaskDialog? dialog = new Widget.TaskDialog();
             dialog.ShowDialog();
             if (dialog.ok)
             {
-                var tmp = dialog.Data;
+                Data.TaskData? tmp = dialog.Data;
                 Data.TaskFactory.list.Add(tmp);
                 AddTask(tmp);
             }
@@ -360,7 +367,7 @@ namespace DesktopUtility
 
         private void DayList_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            var item = (ListBoxItem?)DayList.SelectedItem;
+            ListBoxItem? item = (ListBoxItem?)DayList.SelectedItem;
             if (item != null)
             {
                 if (System.Windows.MessageBox.Show($"删除重要日 {item?.Content} ?", "删除", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
@@ -376,11 +383,11 @@ namespace DesktopUtility
 
         private void TaskList_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            var item = (ListBoxItem?)TaskList.SelectedItem;
+            ListBoxItem? item = (ListBoxItem?)TaskList.SelectedItem;
             if (item != null)
             {
-                var tmp = (WrapPanel)item.Content;
-                var content = ((TextBlock)tmp.Children[1]).Text;
+                WrapPanel? tmp = (WrapPanel)item.Content;
+                string? content = ((TextBlock)tmp.Children[1]).Text;
 
                 if (System.Windows.MessageBox.Show($"删除每日需做 {content} ?", "删除", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
@@ -388,6 +395,11 @@ namespace DesktopUtility
                     Data.TaskFactory.list.RemoveAll((item) => content == item.content);
                 }
             }
+        }
+
+        private void copyrightItem_Click(object sender, RoutedEventArgs e)
+        {
+            new Copyright().ShowDialog();
         }
     }
 }
