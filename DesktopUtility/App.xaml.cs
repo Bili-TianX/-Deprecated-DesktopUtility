@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Media;
 using System.Text;
 using System.Threading;
 using System.Windows;
@@ -38,19 +37,19 @@ namespace DesktopUtility
                             Topmost = true
                         };
 
-                        var result1 = from item in Data.TaskFactory.list
-                                     where !item.check
-                                     select item;
-                        var result2 = from item in Data.PlanFactory.plans
-                                      where !item.check && item.begin <= now && now <= item.end
-                                      select item;
+                        IEnumerable<Data.TaskData>? result1 = from item in Data.TaskFactory.list
+                                                              where !item.check
+                                                              select item;
+                        IEnumerable<Data.PlanData>? result2 = from item in Data.PlanFactory.plans
+                                                              where !item.check && item.begin <= now && now <= item.end
+                                                              select item;
 
                         StringBuilder builder = new();
-                        foreach (var a in result1)
+                        foreach (Data.TaskData? a in result1)
                         {
                             builder.Append(a.content).Append('\n');
                         }
-                        foreach (var a in result2)
+                        foreach (Data.PlanData? a in result2)
                         {
                             builder.Append(a.title).Append('\n');
                         }
@@ -67,7 +66,7 @@ namespace DesktopUtility
                             });
                             grid.RowDefinitions.Add(new RowDefinition());
                             grid.ColumnDefinitions.Add(new ColumnDefinition());
-                            var detail = new TextBlock()
+                            TextBlock? detail = new TextBlock()
                             {
                                 Text = builder.ToString(),
                                 VerticalAlignment = VerticalAlignment.Center,
@@ -92,7 +91,8 @@ namespace DesktopUtility
 
                             window.Content = grid;
 
-                        } else // AC
+                        }
+                        else // AC
                         {
                             //var player = new SoundPlayer(DesktopUtility.Resources.Resource1.ac);
                             //Dispatcher.BeginInvoke(() => player.Play());
@@ -104,7 +104,7 @@ namespace DesktopUtility
                             });
                             grid.RowDefinitions.Add(new RowDefinition());
                             grid.ColumnDefinitions.Add(new ColumnDefinition());
-                            var img = new Image()
+                            Image? img = new Image()
                             {
                                 Source = Util.ImageUtil.ToImageSource(DesktopUtility.Resources.Resource1.yes)
                             };
@@ -125,7 +125,7 @@ namespace DesktopUtility
                             window.Content = grid;
                         }
 
-                        
+
 
                         window.Left = SystemInformation.WorkingArea.Size.Width - window.Width;
                         window.Top = SystemInformation.WorkingArea.Size.Height - window.Height;

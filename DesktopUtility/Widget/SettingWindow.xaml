@@ -5,8 +5,29 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DesktopUtility.Widget"
         mc:Ignorable="d"
-        Title="SettingWindow" Height="450" Width="800">
+       Title="设置" Height="450" Width="800" FontSize="24">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="48"></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="170"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width="170"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+
+        <TextBlock Grid.ColumnSpan="4" VerticalAlignment="Center" HorizontalAlignment="Center">设置</TextBlock>
+        <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center">背景图片</TextBlock>
+        <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center">应用列数</TextBlock>
+        <TextBox x:Name="BGBox" Grid.Row="1" Margin="10" Grid.Column="1" Grid.ColumnSpan="2"></TextBox>
+        <TextBox x:Name="ColumnBox" Grid.Row="2" Margin="10" Grid.Column="1" Grid.ColumnSpan="3"></TextBox>
+        <Button Grid.Row="1" Grid.Column="3" Margin="30" Click="Button_Click">选择</Button>
+        <Button Grid.Row="3" Grid.Column="1" Margin="30" Name="YesButton" Click="YesButton_Click">确定</Button>
+        <Button Grid.Row="3" Grid.Column="2" Margin="30" Name="NoButton" Click="NoButton_Click">取消</Button>
     </Grid>
 </Window>

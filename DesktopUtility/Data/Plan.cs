@@ -100,7 +100,7 @@ namespace DesktopUtility.Data
 
         public static List<PlanData> Unfinished()
         {
-            var now = DateTime.Now;
+            DateTime now = DateTime.Now;
             return (from item in plans
                     where item.begin <= now && now <= item.end
                     select item).ToList();

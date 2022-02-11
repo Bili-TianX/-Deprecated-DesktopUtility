@@ -80,8 +80,8 @@ namespace DesktopUtility.Data
         public static List<TaskData> Unfinished()
         {
             return (from item in list
-                   where item.check == false
-                   select item).ToList();
+                    where item.check == false
+                    select item).ToList();
         }
         public static void SaveToFile()
         {

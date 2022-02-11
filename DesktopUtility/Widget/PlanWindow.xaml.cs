@@ -110,7 +110,9 @@ namespace DesktopUtility.Widget
         {
             ListBoxItem? item = (ListBoxItem?)list.SelectedItem;
             if (item == null)
+            {
                 return;
+            }
 
             Data.PlanData? plan = Data.PlanFactory.GetByTitle(GetTitle(item));
             if (plan == null)

@@ -12,6 +12,7 @@
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
         
         <Grid.ColumnDefinitions>
@@ -20,7 +21,7 @@
         </Grid.ColumnDefinitions>
 
         <TextBlock Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="28">关于</TextBlock>
-        <TextBlock Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center">许可与版权声明</TextBlock>
+        <TextBlock Grid.Row="2" Grid.RowSpan="3" VerticalAlignment="Center" HorizontalAlignment="Center">许可与版权声明</TextBlock>
         <TextBlock Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center">
             <Bold>.NET</Bold><LineBreak/>
             The MIT License (MIT)<LineBreak/>
@@ -39,6 +40,9 @@
             Copyright (c) 2022 Bili-TianX<LineBreak/>
             <Hyperlink NavigateUri="https://github.com/Bili-TianX/DesktopUtility" Click="Hyperlink_Click">源代码</Hyperlink>
         </TextBlock>
-        
+        <TextBlock Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center">
+            <Bold>Hardcodet.NotifyIcon.Wpf</Bold><LineBreak/>
+            The Code Project Open License (CPOL) 1.02
+        </TextBlock>
     </Grid>
 </Window>
