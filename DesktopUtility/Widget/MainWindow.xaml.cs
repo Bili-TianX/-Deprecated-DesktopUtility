@@ -2,6 +2,8 @@
 using DesktopUtility.Widget;
 using Hardcodet.Wpf.TaskbarNotification;
 using System;
+using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
@@ -19,6 +21,7 @@ namespace DesktopUtility
         private static Style? boxItemStyle;
         public TaskbarIcon taskbarIcon;
         public ContextMenu iconMenu;
+        private Thread thread;
 
         private static IntPtr SearchDesktopHandle()
         {
@@ -41,7 +44,29 @@ namespace DesktopUtility
 
         public void OnLove(object sender, EventArgs e)
         {
-            // TODO
+            Window w = new()
+            {
+                Width = 400,
+                Height = 400,
+                WindowStartupLocation = WindowStartupLocation.CenterScreen,
+            };
+            Grid g = new();
+            g.RowDefinitions.Add(new RowDefinition());
+            g.ColumnDefinitions.Add(new ColumnDefinition());
+            TextBlock t = new()
+            {
+                Text = Data.Love.Get(),
+                FontSize = 36,
+                VerticalAlignment = VerticalAlignment.Center,
+                HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
+                TextWrapping = TextWrapping.Wrap
+            };
+            g.Children.Add(t);
+            Grid.SetRow(t, 0);
+            Grid.SetColumn(t, 0);
+            w.Content = g;
+
+            w.ShowDialog();
         }
 
         public void OnSetting(object sender, EventArgs e)
@@ -95,6 +120,35 @@ namespace DesktopUtility
             };
             MyMenu.Items.Add(b);
             b.Click += OnSetting;
+            thread = new Thread(run)
+            {
+                IsBackground = true
+            };
+            thread.Start();
+        }
+
+        public void run()
+        {
+            while (true)
+            {
+                var now = DateTime.Now;
+                var result = from item in Data.PlanFactory.plans
+                             where item.begin <= now && now <= item.end && !item.check
+                             select item;
+                Dispatcher.BeginInvoke(() =>
+                {
+                    TipList.Items.Clear();
+                    foreach (var item in result)
+                    {
+                        TipList.Items.Add(new ListBoxItem()
+                        {
+                            Content = item.title,
+                            Style = boxItemStyle
+                        });
+                    }
+                });
+                Thread.Sleep(10 * 1000);
+            }
         }
 
         public void AddDay(Data.DayData data)
@@ -328,7 +382,7 @@ namespace DesktopUtility
             }
         }
 
-        public static void ShowPlan(DateTime? time = null)
+        public void ShowPlan(DateTime? time = null)
         {
             if (time != null)
             {

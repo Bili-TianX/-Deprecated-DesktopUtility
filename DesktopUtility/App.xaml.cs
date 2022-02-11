@@ -147,6 +147,7 @@ namespace DesktopUtility
             Data.DayFactory.LoadFromFile();
             Data.TaskFactory.LoadFromFile();
             Data.Setting.LoadSetting();
+            Data.Love.LoadFromFile();
 
             thread = new(f);
             thread.IsBackground = true;
@@ -160,6 +161,8 @@ namespace DesktopUtility
             Data.PlanFactory.SaveToFile();
             Data.DayFactory.SaveToFile();
             Data.TaskFactory.SaveToFile();
+            Data.Love.SaveToFile();
+
             GC.Collect();
         }
     }
