@@ -16,7 +16,7 @@ namespace DesktopUtility
     public unsafe partial class MainWindow : Window
     {
         public const bool onBottom = true;
-        public static Style? boxItemStyle;
+        private static Style? boxItemStyle;
         public TaskbarIcon taskbarIcon;
         public ContextMenu iconMenu;
 
@@ -24,11 +24,11 @@ namespace DesktopUtility
         {
             IntPtr desktop = Util.WinAPI.GetDesktopWindow();
             IntPtr hWorkerW = IntPtr.Zero;
-            IntPtr hShellViewWin = IntPtr.Zero;
+            //IntPtr hShellViewWin;
             //do
             //{
             hWorkerW = Util.WinAPI.FindWindowEx(desktop, hWorkerW, "WorkerW", string.Empty);
-            hShellViewWin = Util.WinAPI.FindWindowEx(hWorkerW, IntPtr.Zero, "SHELLDLL_DefView", string.Empty);
+            //hShellViewWin = Util.WinAPI.FindWindowEx(hWorkerW, IntPtr.Zero, "SHELLDLL_DefView", string.Empty);
             //} while (hShellViewWin == IntPtr.Zero && hWorkerW != IntPtr.Zero);
             return hWorkerW;
         }
@@ -80,7 +80,7 @@ namespace DesktopUtility
 
             Left = Top = 0;
 
-            MenuItem? a = new MenuItem()
+            MenuItem? a = new()
             {
                 Icon = Util.ImageUtil.ToImage(DesktopUtility.Resources.MyRes.heart),
                 Header = "Love"
@@ -88,7 +88,7 @@ namespace DesktopUtility
             MyMenu.Items.Add(a);
             a.Click += OnLove;
 
-            MenuItem? b = new MenuItem()
+            MenuItem? b = new()
             {
                 Icon = Util.ImageUtil.ToImage(DesktopUtility.Resources.MyRes.set),
                 Header = "设置"
@@ -109,7 +109,7 @@ namespace DesktopUtility
             DayList.Items.Add(new ListBoxItem()
             {
                 Style = boxItemStyle,
-                Content = $"{data.name}({data.time.ToString("M")})({(int)(time - now).TotalDays}天)"
+                Content = $"{data.name}({data.time:M})({(int)(time - now).TotalDays}天)"
             });
         }
 
@@ -173,12 +173,12 @@ namespace DesktopUtility
                 MenuActivation = PopupActivationMode.RightClick
             };
 
-            MenuItem? item = new MenuItem()
+            MenuItem? item = new()
             {
                 Header = "退出"
             };
             item.Click += (o, e) => { System.Windows.Application.Current.Shutdown(0); };
-            MenuItem? item2 = new MenuItem()
+            MenuItem? item2 = new()
             {
                 Header = "显示/隐藏"
             };
@@ -212,8 +212,8 @@ namespace DesktopUtility
 
         public void AttachPlan(Data.PlanData plan)
         {
-            DateTime begin = new DateTime(plan.begin.Year, plan.begin.Month, plan.begin.Day);
-            DateTime end = new DateTime(plan.end.Year, plan.end.Month, plan.end.Day);
+            DateTime begin = new(plan.begin.Year, plan.begin.Month, plan.begin.Day);
+            DateTime end = new(plan.end.Year, plan.end.Month, plan.end.Day);
             foreach (DateLabel? item in calendar.list)
             {
                 if (item != null)
@@ -259,7 +259,7 @@ namespace DesktopUtility
 
             if (r != null && (bool)r)
             {
-                IconNameDialog? dialog = new IconNameDialog(ofd.SafeFileName[..^4].Capitalize());
+                IconNameDialog? dialog = new(ofd.SafeFileName[..^4].Capitalize());
                 dialog.ShowDialog();
                 if (!dialog.ok)
                 {
@@ -318,7 +318,7 @@ namespace DesktopUtility
 
         private void addPlanItem_Click(object sender, RoutedEventArgs e)
         {
-            PlanDialog? dialog = new PlanDialog();
+            PlanDialog? dialog = new();
             dialog.ShowDialog();
             if (dialog.ok)
             {
@@ -328,7 +328,7 @@ namespace DesktopUtility
             }
         }
 
-        public void ShowPlan(DateTime? time = null)
+        public static void ShowPlan(DateTime? time = null)
         {
             if (time != null)
             {
@@ -347,7 +347,7 @@ namespace DesktopUtility
 
         private void editTimeItem_Click(object sender, RoutedEventArgs e)
         {
-            EditTimeDialog? dialog = new EditTimeDialog(calendar.year, calendar.month);
+            EditTimeDialog? dialog = new(calendar.year, calendar.month);
             dialog.ShowDialog();
             if (dialog.ok)
             {
@@ -365,7 +365,7 @@ namespace DesktopUtility
 
         private void addDayItem_Click(object sender, RoutedEventArgs e)
         {
-            DayDialog? dialog = new DayDialog();
+            DayDialog? dialog = new();
             dialog.ShowDialog();
             if (dialog.ok)
             {
@@ -409,7 +409,7 @@ namespace DesktopUtility
 
         private void addTaskItem_Click(object sender, RoutedEventArgs e)
         {
-            Widget.TaskDialog? dialog = new Widget.TaskDialog();
+            Widget.TaskDialog? dialog = new();
             dialog.ShowDialog();
             if (dialog.ok)
             {

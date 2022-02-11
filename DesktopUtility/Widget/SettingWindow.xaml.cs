@@ -35,8 +35,8 @@ namespace DesktopUtility.Widget
                 }
 
                 MainWindow? w = App.Current.MainWindow as MainWindow;
-                w.ReLayout();
-                w.updateBackground();
+                w?.ReLayout();
+                w?.updateBackground();
 
                 Close();
             }

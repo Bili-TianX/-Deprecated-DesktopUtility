@@ -16,7 +16,7 @@ namespace DesktopUtility
     /// </summary>
     public partial class App : System.Windows.Application
     {
-        private Thread thread;
+        private Thread? thread;
 
         public void f()
         {
@@ -30,7 +30,7 @@ namespace DesktopUtility
                     set.Add(tmp);
                     Dispatcher.BeginInvoke(() =>
                     {
-                        Window? window = new Window()
+                        Window? window = new()
                         {
                             Width = 400,
                             Height = 300,
@@ -66,7 +66,7 @@ namespace DesktopUtility
                             });
                             grid.RowDefinitions.Add(new RowDefinition());
                             grid.ColumnDefinitions.Add(new ColumnDefinition());
-                            TextBlock? detail = new TextBlock()
+                            TextBlock? detail = new()
                             {
                                 Text = builder.ToString(),
                                 VerticalAlignment = VerticalAlignment.Center,
@@ -104,7 +104,7 @@ namespace DesktopUtility
                             });
                             grid.RowDefinitions.Add(new RowDefinition());
                             grid.ColumnDefinitions.Add(new ColumnDefinition());
-                            Image? img = new Image()
+                            Image? img = new()
                             {
                                 Source = Util.ImageUtil.ToImageSource(DesktopUtility.Resources.Resource1.yes)
                             };
