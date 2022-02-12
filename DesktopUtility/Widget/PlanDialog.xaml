@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DesktopUtility.Widget"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen"
-        Title="PlanDialog" Height="450" Width="600" FontSize="16">
+        Title="计划" Height="450" Width="600" FontSize="16">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="48"></RowDefinition>

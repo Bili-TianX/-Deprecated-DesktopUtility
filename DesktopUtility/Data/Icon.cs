@@ -186,6 +186,7 @@ namespace DesktopUtility.Data
                         if (!System.IO.File.Exists(obj?.Path))
                         {
                             MessageBox.Show($"无法找到{obj?.Name}({obj?.Path}), 请查看软件是否已卸载", "警告");
+
                             continue;
                         }
                         icons.Add(new AppIcon((IconData)obj));

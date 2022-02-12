@@ -14,23 +14,33 @@ namespace DesktopUtility.Data
         private const string TargetFolder = "./data/love/";
         private const string TargetFile = "cache.json";
         public static List<string> list = new();
-        public static List<string> used = new();
+        public static Dictionary<(int year, int month, int day), string> used = new();
 
         public static string Get()
         {
             try
             {
-                var unused = (from item in list
-                             where !used.Contains(item)
-                             select item).ToList();
-                if (unused.Any())
+                var tmp = DateTime.Now;
+                (int year, int month, int day) now = (tmp.Year, tmp.Month, tmp.Day);
+                if (!used.ContainsKey(now))
                 {
-                    var tmp = unused[new Random().Next(0, unused.Count)];
-                    used.Add(tmp);
-                    return tmp;
-                } else
+                    var unused = (from item in list
+                                  where !used.ContainsValue(item)
+                                  select item).ToList();
+
+                    if (unused.Any())
+                    {
+                        var s = unused[Random.Shared.Next(0, unused.Count)];
+                        used[now] = s;
+                        return s;
+                    } else
+                    {
+                        return "抱歉，暂时没有可用的句子";
+                    }
+
+                }else
                 {
-                    return "抱歉，暂时没有可用的句子";
+                    return used[now];
                 }
                 
             } catch (Exception)
@@ -47,9 +57,13 @@ namespace DesktopUtility.Data
             }
 
             using StreamWriter writer = new(TargetFolder + TargetFile);
-            JArray array = new();
-            used.ForEach(x => array.Add(x));
-            writer.Write(array.ToString());
+            JObject obj = new();
+            foreach (var item in used)
+            {
+                var key = item.Key;
+                obj.Add($"{key.year}-{key.month}-{key.day}", item.Value);
+            }
+            writer.Write(obj.ToString());
         }
 
         public static void LoadFromFile()
@@ -62,9 +76,11 @@ namespace DesktopUtility.Data
             if (File.Exists(TargetFolder + TargetFile))
             {
                 using StreamReader reader = new(TargetFolder + TargetFile);
-                foreach (var x in JArray.Parse(reader.ReadToEnd()))
+                foreach (var x in JObject.Parse(reader.ReadToEnd()))
                 {
-                    used.Add(x.ToString());
+                    var key = x.Key.Split('-');
+                    var value = x.Value!.ToString();
+                    used.Add((int.Parse(key[0]), int.Parse(key[1]), int.Parse(key[2])), value);
                 }
             }
 
