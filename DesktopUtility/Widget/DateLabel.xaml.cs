@@ -42,7 +42,7 @@ namespace DesktopUtility.Widget
         public void RemovePlan()
         {
             attached = false;
-            block.Foreground = new SolidColorBrush(Util.ColorUtil.Black);
+            block.Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 0));
             block.FontWeight = FontWeights.Normal;
         }
 

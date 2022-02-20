@@ -6,25 +6,9 @@ public class AES
 {
     public static void Main()
     {
-        List<string> list = new();
-
-        foreach (string? file in Directory.EnumerateFiles(@"F:\test\data"))
-        {
-            if (file.EndsWith(".love"))
-            {
-                using StreamReader reader = new(file);
-                string? s = AES.getInstsance().Decrypt(reader.ReadToEnd());
-                JArray? array = JArray.Parse(s);
-                foreach (JToken? a in array)
-                {
-                    list.Add(a.ToString());
-                }
-            }
-        }
-
-        //using StreamWriter writer = new(@"F:\test\data\1.love");
-        //using StreamReader reader = new(@"F:\test\data\1.json");
-        //writer.Write(AES.getInstsance().Encrypt(JArray.Parse(reader.ReadToEnd()).ToString()));
+        using StreamWriter writer = new(@"C:\Users\Bili_TianX\Desktop\word.love");
+        using StreamReader reader = new(@"C:\Users\Bili_TianX\Desktop\word.json");
+        writer.Write(AES.getInstsance().Encrypt(JArray.Parse(reader.ReadToEnd()).ToString()));
     }
 
     private static AES? instance;

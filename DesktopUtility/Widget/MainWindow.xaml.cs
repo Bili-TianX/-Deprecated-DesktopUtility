@@ -27,12 +27,12 @@ namespace DesktopUtility
         {
             IntPtr desktop = Util.WinAPI.GetDesktopWindow();
             IntPtr hWorkerW = IntPtr.Zero;
-            //IntPtr hShellViewWin;
-            //do
-            //{
-            hWorkerW = Util.WinAPI.FindWindowEx(desktop, hWorkerW, "WorkerW", string.Empty);
-            //hShellViewWin = Util.WinAPI.FindWindowEx(hWorkerW, IntPtr.Zero, "SHELLDLL_DefView", string.Empty);
-            //} while (hShellViewWin == IntPtr.Zero && hWorkerW != IntPtr.Zero);
+            IntPtr hShellViewWin;
+            do
+            {
+                hWorkerW = Util.WinAPI.FindWindowEx(desktop, hWorkerW, "WorkerW", string.Empty);
+                hShellViewWin = Util.WinAPI.FindWindowEx(hWorkerW, IntPtr.Zero, "SHELLDLL_DefView", string.Empty);
+            } while (hShellViewWin == IntPtr.Zero && hWorkerW != IntPtr.Zero);
             return hWorkerW;
         }
 
@@ -77,33 +77,27 @@ namespace DesktopUtility
 
         private void MainWindow_onLoaded(object sender, EventArgs e)
         {
-            //            if (onBottom)
-            //            {
-            //#pragma warning disable CS0162 // 检测到无法访问的代码
-            //                const int GWL_STYLE = (-16);
-            //#pragma warning restore CS0162 // 检测到无法访问的代码
-            //                const ulong WS_CHILD = 0x40000000;
+            if (onBottom)
+            {
+#pragma warning disable CS0162 // 检测到无法访问的代码
+                const int GWL_STYLE = (-16);
+#pragma warning restore CS0162 // 检测到无法访问的代码
+                const ulong WS_CHILD = 0x40000000;
+                IntPtr hWnd = new WindowInteropHelper(this).Handle;
+                ulong iWindowStyle = Util.WinAPI.GetWindowLong(hWnd, GWL_STYLE);
+#pragma warning disable CA1806 // 不要忽略方法结果
+                WinAPI.SetWindowLong(hWnd, GWL_STYLE, (iWindowStyle | WS_CHILD));
+#pragma warning restore CA1806 // 不要忽略方法结果
 
-            //                ulong iWindowStyle = Util.WinAPI.GetWindowLong(hWnd, GWL_STYLE);
-            //#pragma warning disable CA1806 // 不要忽略方法结果
-            //                WinAPI.SetWindowLong(hWnd, GWL_STYLE, (iWindowStyle | WS_CHILD));
-            //#pragma warning restore CA1806 // 不要忽略方法结果
-
-            //                IntPtr desktopHandle = SearchDesktopHandle();
-            //                Util.WinAPI.SetParent(hWnd, desktopHandle);
-            //            }
-            //            Width = SystemInformation.WorkingArea.Size.Width;
-            //            Height = SystemInformation.WorkingArea.Size.Height;
-            //            Left = Top = 0;
-            IntPtr hWnd = new WindowInteropHelper(this).Handle;
-            Util.WinAPI.SetWindowPos(hWnd, new IntPtr(0x0001),
-                0, 0,
-                SystemInformation.WorkingArea.Size.Width, SystemInformation.WorkingArea.Size.Height,
-                0x0002);
-            Width = SystemInformation.WorkingArea.Size.Width;
-            Height = SystemInformation.WorkingArea.Size.Height;
+                IntPtr desktopHandle = SearchDesktopHandle();
+                Util.WinAPI.SetParent(hWnd, desktopHandle);
+            }
 
             Left = Top = 0;
+            Width = Screen.AllScreens[0].WorkingArea.Width;
+            Height = Screen.AllScreens[0].WorkingArea.Height;
+
+
 
             MenuItem? a = new()
             {
@@ -131,14 +125,23 @@ namespace DesktopUtility
         {
             while (true)
             {
-                var now = DateTime.Now;
-                var result = from item in Data.PlanFactory.plans
-                             where item.begin <= now && now <= item.end && !item.check
-                             select item;
+                DateTime now = DateTime.Now;
+                System.Collections.Generic.IEnumerable<Data.PlanData>? result = from item in Data.PlanFactory.plans
+                                                                                where item.begin <= now && now <= item.end && !item.check
+                                                                                select item;
+                System.Collections.Generic.IEnumerable<Data.PlanData>? removed = from item in Data.PlanFactory.plans
+                                                                                 where item.end < now && !item.check
+                                                                                 select item;
+                for (int i = 0; i < removed.Count(); ++i)
+                {
+                    Data.PlanFactory.plans.Remove(removed.ElementAt(i));
+                }
+
                 Dispatcher.BeginInvoke(() =>
                 {
+                    AttachPlan();
                     TipList.Items.Clear();
-                    foreach (var item in result)
+                    foreach (Data.PlanData? item in result)
                     {
                         TipList.Items.Add(new ListBoxItem()
                         {
@@ -146,6 +149,7 @@ namespace DesktopUtility
                             Style = boxItemStyle
                         });
                     }
+
                 });
                 Thread.Sleep(10 * 1000);
             }

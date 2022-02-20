@@ -17,6 +17,7 @@ namespace DesktopUtility
     public partial class App : System.Windows.Application
     {
         private Thread? thread;
+        private Thread? saveThread;
 
         public void f()
         {
@@ -136,6 +137,21 @@ namespace DesktopUtility
             }
         }
 
+        public void save()
+        {
+            while (true)
+            {
+                Data.Setting.SaveSetting();
+                Data.IconFactory.SaveToFile();
+                Data.PlanFactory.SaveToFile();
+                Data.DayFactory.SaveToFile();
+                Data.TaskFactory.SaveToFile();
+                Data.Love.SaveToFile();
+
+                Thread.Sleep(10 * 1000);
+            }
+        }
+
         private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
             System.Windows.MessageBox.Show("抱歉，程序出现了异常，请把此窗口截图发给我\n错误信息：" + e.Exception.ToString(), e.Exception.GetType().ToString());
@@ -152,18 +168,14 @@ namespace DesktopUtility
             thread = new(f);
             thread.IsBackground = true;
             thread.Start();
+
+            saveThread = new(save);
+            saveThread.Start();
+            saveThread.IsBackground = true;
         }
 
         private void Application_Exit(object sender, ExitEventArgs e)
         {
-            Data.Setting.SaveSetting();
-            Data.IconFactory.SaveToFile();
-            Data.PlanFactory.SaveToFile();
-            Data.DayFactory.SaveToFile();
-            Data.TaskFactory.SaveToFile();
-            Data.Love.SaveToFile();
-
-            GC.Collect();
         }
     }
 }

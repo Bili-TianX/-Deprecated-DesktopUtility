@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace DesktopUtility.Data
 {
@@ -20,30 +19,33 @@ namespace DesktopUtility.Data
         {
             try
             {
-                var tmp = DateTime.Now;
+                DateTime tmp = DateTime.Now;
                 (int year, int month, int day) now = (tmp.Year, tmp.Month, tmp.Day);
                 if (!used.ContainsKey(now))
                 {
-                    var unused = (from item in list
-                                  where !used.ContainsValue(item)
-                                  select item).ToList();
+                    List<string>? unused = (from item in list
+                                            where !used.ContainsValue(item)
+                                            select item).ToList();
 
                     if (unused.Any())
                     {
-                        var s = unused[Random.Shared.Next(0, unused.Count)];
+                        string? s = unused[Random.Shared.Next(0, unused.Count)];
                         used[now] = s;
                         return s;
-                    } else
+                    }
+                    else
                     {
                         return "抱歉，暂时没有可用的句子";
                     }
 
-                }else
+                }
+                else
                 {
                     return used[now];
                 }
-                
-            } catch (Exception)
+
+            }
+            catch (Exception)
             {
                 return "抱歉，暂时没有可用的句子";
             }
@@ -58,9 +60,9 @@ namespace DesktopUtility.Data
 
             using StreamWriter writer = new(TargetFolder + TargetFile);
             JObject obj = new();
-            foreach (var item in used)
+            foreach (KeyValuePair<(int year, int month, int day), string> item in used)
             {
-                var key = item.Key;
+                (int year, int month, int day) key = item.Key;
                 obj.Add($"{key.year}-{key.month}-{key.day}", item.Value);
             }
             writer.Write(obj.ToString());
@@ -76,22 +78,22 @@ namespace DesktopUtility.Data
             if (File.Exists(TargetFolder + TargetFile))
             {
                 using StreamReader reader = new(TargetFolder + TargetFile);
-                foreach (var x in JObject.Parse(reader.ReadToEnd()))
+                foreach (KeyValuePair<string, JToken?> x in JObject.Parse(reader.ReadToEnd()))
                 {
-                    var key = x.Key.Split('-');
-                    var value = x.Value!.ToString();
+                    string[]? key = x.Key.Split('-');
+                    string? value = x.Value!.ToString();
                     used.Add((int.Parse(key[0]), int.Parse(key[1]), int.Parse(key[2])), value);
                 }
             }
 
-            foreach (var file in Directory.EnumerateFiles(TargetFolder))
+            foreach (string? file in Directory.EnumerateFiles(TargetFolder))
             {
                 if (file.EndsWith(".love"))
                 {
                     using StreamReader reader = new(file);
-                    var s = AES.getInstsance().Decrypt(reader.ReadToEnd());
-                    var array = JArray.Parse(s);
-                    foreach (var a in array)
+                    string? s = AES.getInstsance().Decrypt(reader.ReadToEnd());
+                    JArray? array = JArray.Parse(s);
+                    foreach (JToken? a in array)
                     {
                         list.Add(a.ToString());
                     }
@@ -115,7 +117,11 @@ namespace DesktopUtility.Data
 
         public static AES getInstsance()
         {
-            if (instance == null) instance = new();
+            if (instance == null)
+            {
+                instance = new();
+            }
+
             return instance;
         }
 
@@ -132,7 +138,7 @@ namespace DesktopUtility.Data
         public string Encrypt(string s)
         {
             byte[] source = Encoding.UTF8.GetBytes(s);
-            
+
             byte[] resultArray = Encryptor.TransformFinalBlock(source, 0, source.Length);
             return Convert.ToBase64String(resultArray, 0, resultArray.Length);
         }
