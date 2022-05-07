@@ -6,8 +6,8 @@ public class AES
 {
     public static void Main()
     {
-        using StreamWriter writer = new(@"C:\Users\Bili_TianX\Desktop\word.love");
-        using StreamReader reader = new(@"C:\Users\Bili_TianX\Desktop\word.json");
+        using StreamWriter writer = new(@"C:\Users\Bili_TianX\Desktop\5-15.love");
+        using StreamReader reader = new(@"C:\Users\Bili_TianX\Desktop\1.json");
         writer.Write(AES.getInstsance().Encrypt(JArray.Parse(reader.ReadToEnd()).ToString()));
     }
 

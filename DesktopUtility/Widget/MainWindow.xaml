@@ -106,8 +106,7 @@
                 <RowDefinition Height="1.5*"></RowDefinition>
                 <RowDefinition Height="1*"></RowDefinition>
             </Grid.RowDefinitions>
-
-            <widget:MyCalendar x:Name="calendar" Grid.Row="0" Grid.ColumnSpan="2"></widget:MyCalendar>
+            <widget:MyCalendar x:Name="calendar" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"></widget:MyCalendar>
 
             <Grid Margin="5" Grid.Row="1" Grid.Column="0">
                 <Grid.RowDefinitions>

@@ -35,6 +35,7 @@ namespace DesktopUtility.Widget
             row_count = (int)Math.Ceiling((max_day + week) / 7.0);
 
             ReLayout();
+
         }
 
         public void ReLayout()
@@ -85,7 +86,7 @@ namespace DesktopUtility.Widget
                 label.block.Text = i.ToString();
                 MainGrid.Children.Add(label);
                 Grid.SetRow(label, 2 + (i + week - 2) / 7);
-                Grid.SetColumn(label, (i + week - 2) % 7);
+                Grid.SetColumn(label, (i + week - 2 + 7) % 7);
                 this.list.Add(label);
             }
 

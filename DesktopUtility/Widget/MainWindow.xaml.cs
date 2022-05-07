@@ -99,13 +99,13 @@ namespace DesktopUtility
 
 
 
-            MenuItem? a = new()
+            /*MenuItem? a = new()
             {
                 Icon = Util.ImageUtil.ToImage(DesktopUtility.Resources.MyRes.heart),
                 Header = "Love"
             };
             MyMenu.Items.Add(a);
-            a.Click += OnLove;
+            a.Click += OnLove;*/
 
             MenuItem? b = new()
             {
@@ -129,17 +129,20 @@ namespace DesktopUtility
                 System.Collections.Generic.IEnumerable<Data.PlanData>? result = from item in Data.PlanFactory.plans
                                                                                 where item.begin <= now && now <= item.end && !item.check
                                                                                 select item;
-                System.Collections.Generic.IEnumerable<Data.PlanData>? removed = from item in Data.PlanFactory.plans
-                                                                                 where item.end < now && !item.check
-                                                                                 select item;
-                for (int i = 0; i < removed.Count(); ++i)
-                {
-                    Data.PlanFactory.plans.Remove(removed.ElementAt(i));
-                }
+
+                var r = from item in calendar.list
+                             where item.Time.Month <= now.Month && item.Time.Day < now.Day && item.Time.Year <= now.Year
+                             select item;
+                
 
                 Dispatcher.BeginInvoke(() =>
                 {
-                    AttachPlan();
+                    foreach (var item in r)
+                    {
+                        item.Visibility = Visibility.Hidden;
+                        item.IsEnabled = false;
+                    }
+
                     TipList.Items.Clear();
                     foreach (Data.PlanData? item in result)
                     {
