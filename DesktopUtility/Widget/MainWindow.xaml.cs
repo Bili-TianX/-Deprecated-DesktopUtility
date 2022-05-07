@@ -126,10 +126,12 @@ namespace DesktopUtility
             while (true)
             {
                 DateTime now = DateTime.Now;
-                System.Collections.Generic.IEnumerable<Data.PlanData>? result = from item in Data.PlanFactory.plans
+                System.Collections.Generic.IEnumerable<Data.PlanData>? result1 = from item in Data.PlanFactory.plans
                                                                                 where item.begin <= now && now <= item.end && !item.check
                                                                                 select item;
-
+                System.Collections.Generic.IEnumerable<Data.TaskData>? result2 = from item in Data.TaskFactory.list
+                                                                                 where !item.check
+                                                                                 select item;
                 var r = from item in calendar.list
                              where item.Time.Month <= now.Month && item.Time.Day < now.Day && item.Time.Year <= now.Year
                              select item;
@@ -144,13 +146,22 @@ namespace DesktopUtility
                     }
 
                     TipList.Items.Clear();
-                    foreach (Data.PlanData? item in result)
+                    foreach (Data.PlanData? item in result1)
                     {
                         TipList.Items.Add(new ListBoxItem()
                         {
                             Content = item.title,
                             Style = boxItemStyle
                         });
+                    }
+
+                    foreach (Data.TaskData? item in result2)
+                    {
+                        TipList.Items.Add(new ListBoxItem()
+                        {
+                            Content = item?.content,
+                            Style = boxItemStyle
+                        }) ;
                     }
 
                 });
@@ -160,8 +171,8 @@ namespace DesktopUtility
 
         public void AddDay(Data.DayData data)
         {
-            DateTime time = data.time;
             DateTime now = DateTime.Now;
+            DateTime time = new DateTime(now.Year, data.time.Month, data.time.Day);
             if (time.Month <= now.Month && time.Day < now.Day)
             {
                 now = new DateTime(now.Year - 1, now.Month, now.Day);
