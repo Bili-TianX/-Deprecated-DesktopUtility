@@ -1,4 +1,4 @@
-# Desktop Utility 使用手册
+# **Desktop** Utility 使用手册
 
 ## 首次启动
 
@@ -7,10 +7,6 @@
 <img title="" src="file:///E:/cache/2022-02-11-13-53-29-image.png" alt="" width="405">等待开屏动画结束
 
 第一次启动时程序将会在当前目录下创建“data”文件夹，用于保存程序所需的数据
-
-首次启动会询问你添加什么应用，按需要勾选后点击确定即可启动程序
-
-<img src="file:///E:/cache/2022-02-11-13-54-31-image.png" title="" alt="" width="523">
 
 这是程序的默认外观
 
