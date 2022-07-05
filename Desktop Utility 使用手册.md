@@ -1,7 +1,5 @@
 # Desktop Utility 使用手册
 
-[toc]
-
 ## 首次启动
 
 ![](E:\cache\2022-02-11-13-52-15-image.png)双击运行
@@ -246,17 +244,3 @@
 
 2. 输入应用列数，点击确定
 - 数据保存在`./data/bg.png`和`./data/settings.json`
-
-## Love
-
-右键任意地方，选择“![](E:\cache\2022-02-12-22-05-25-image.png)”，将会显示一句话（每天只有一句且不重复）
-
-若没有可用句子，将会显示<img title="" src="file:///E:/cache/2022-02-12-22-07-36-image.png" alt="" width="271">
-
-### 添加句子
-
-将句子文件添加至`./data/love/`下即可（后缀名必须为`.love`且为AES加密过的文件）
-
-### 其他
-
-- 数据保存在`./data/love/cache.json`
